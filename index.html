@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hướng dẫn ấu ăn</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<!-- HỘP GỢI Ý MÓN ĂN -->
+<div id="hopGoiY" class="hop-goi-y">
+
+    <div class="noi-dung-goi-y">
+
+        <span class="dong" onclick="dongGoiY()">&times;</span>
+        <h2>🍽️ Gợi ý món ăn tuần này</h2>
+        <p class="mo-ta">
+            Một vài món ngon, dễ làm cho gia đình
+        </p>
+
+        <div class="goi-y-mon">
+
+            <!-- MÓN 1 -->
+            <div class="goi-y-card">
+                <img src="images/Dau xot ca chua.jpg" alt="Đậu xốt cà chua">
+                <h3>Đậu xốt cà chua</h3>
+                <p>⏱ 25 phút</p>
+            </div>
+
+            <!-- MÓN 2 -->
+            <div class="goi-y-card">
+                <img src="images/Com chien.jpg" alt="Cơm chiên">
+                <h3>Cơm chiên</h3>
+                <p>⏱ 25 phút</p>
+            </div>
+
+            <!-- MÓN 3 -->
+            <div class="goi-y-card">
+                <img src="images/Canh xuong khoai tay ca rot.jpg" alt="Canh xuơng khoai tây cà rốt">
+                <h3>Canh xuơng khoai tây cà rốt</h3>
+                <p>⏱ 20 phút</p>
+            </div>
+
+            <!-- MÓN 4 -->
+            <div class="goi-y-card">
+                <img src="images/Bun bo.jpg" alt="Bún bò">
+                <h3>Bún bò</h3>
+                <p>⏱ 20 phút</p>
+            </div>
+        </div>
+
+        <button class="nut-dong" onclick="dongGoiY()">
+            Đóng
+        </button>
+
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+
+<body>
+
+    <!-- MENU -->
+    <header>
+        <div class="logo">
+            🍳 HƯỚNG DẪN NẤU ĂN
+        </div>
+
+        <nav>
+            <a href="index.html">Trang chủ</a>
+            <a href="mon-an.html">Món ăn</a>
+            <a href="danh-muc.html">Danh mục</a>
+            <a href="#">Đăng công thức</a>
+            <a href="#">Đăng nhập</a>
+        </nav>
+    </header>
+
+    <!-- PHẦN GIỚI THIỆU -->
+<section class="banner">
+
+    <h1>Khám phá những món ăn ngon</h1>
+
+    <p>
+        Công thức nấu ăn đơn giản dành cho gia đình
+    </p>
+
+    <!-- BANNER TUẦN NÀY -->
+    <div class="banner-tuan">
+        <div class="banner-noi-dung">
+            <h2>Chưa biết tuần này nấu gì?</h2>
+            <p>Gợi ý ngon và dễ làm cho cả tuần.</p>
+            <button onclick="moGoiY()">Xem công thức tuần này</button>
+        </div>
+
+        <div class="banner-mon-an">
+            <img src="images/Com chien.jpg" alt="Cơm chiên">
+        </div>
+
+    </div>
+
+</section>
+
+    <!-- MÓN ĂN NỔI BẬT -->
+<!-- MÓN ĂN NỔI BẬT -->
+<section class="mon-an">
+
+    <h2>🍃 Món ăn nổi bật 🍃</h2>
+
+    <div class="danh-sach">
+
+        <!-- PHỞ BÒ -->
+        <div class="mon">
+
+            <div class="anh-mon">
+                <img src="images/Pho bo.jpg" alt="Phở bò">
+            </div>
+
+            <div class="thong-tin-mon">
+                <h3>Phở bò</h3>
+                <p>Món ăn truyền thống Việt Nam</p>
+            </div>
+
+        </div>
+
+
+        <!-- GÀ CHIÊN -->
+        <div class="mon">
+
+            <div class="anh-mon">
+                <img src="images/Ga chien nuoc mam.jpg" alt="Gà chiên nước mắm">
+            </div>
+
+            <div class="thong-tin-mon">
+                <h3>Gà chiên nước mắm</h3>
+                <p>Thơm ngon, dễ làm</p>
+            </div>
+
+        </div>
+
+
+        <!-- CANH CHUA -->
+        <div class="mon">
+
+            <div class="anh-mon">
+                <img src="images/Canh chua ca loc.jpg" alt="Canh chua">
+            </div>
+
+            <div class="thong-tin-mon">
+                <h3>Canh chua cá lóc</h3>
+                <p>Món canh cho bữa cơm gia đình</p>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+    <!-- DANH MỤC -->
+
+
+    <!-- FOOTER -->
+    <footer>
+        <h3>🍳 HƯỚNG DẪN NẤU ĂN</h3>
+        <p>
+            Chia sẻ những công thức ngon cho bữa cơm gia đình.
+        </p>
+    </footer>
+
+</body>
+
+</html>
