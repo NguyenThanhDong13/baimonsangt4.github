@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi tiết món ăn</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header>
+        <div class="logo">🍳 HƯỚNG DẪN NẤU ĂN</div>
+
+        <nav>
+            <a href="index.html">Trang chủ</a>
+            <a href="mon-an.html">Món ăn</a>
+            <a href="danh-muc.html">Danh mục</a>
+            <a href="#">Đăng công thức</a>
+            <a href="#">Đăng nhập</a>
+        </nav>
+    </header>
+
+    <main class="chi-tiet-mon">
+        <a class="nut-quay-lai" href="mon-an.html">← Quay lại danh sách món</a>
+
+        <section class="chi-tiet-dau-trang">
+            <div class="chi-tiet-anh">
+                <img id="chiTietAnh" src="" alt="">
+            </div>
+
+            <aside class="chi-tiet-thong-tin">
+                <span id="chiTietDanhMuc" class="nhan-danh-muc"></span>
+                <h1 id="chiTietTenMon"></h1>
+                <p id="chiTietMoTa"></p>
+
+                <div class="thong-so-mon">
+                    <div>
+                        <strong>⏱ Thời gian</strong>
+                        <span id="chiTietThoiGian"></span>
+                    </div>
+
+                    <div>
+                        <strong>🍽 Khẩu phần</strong>
+                        <span>2–4 người</span>
+                    </div>
+
+                    <div>
+                        <strong>⭐ Độ khó</strong>
+                        <span>Dễ</span>
+                    </div>
+                </div>
+
+                <button class="nut-yeu-thich" type="button">
+                    ♡ Lưu công thức
+                </button>
+            </aside>
+        </section>
+
+        <section class="noi-dung-cong-thuc">
+            <div class="khoi-noi-dung">
+                <h2>🧂 Nguyên liệu</h2>
+                <ul id="chiTietNguyenLieu"></ul>
+            </div>
+
+            <div class="khoi-noi-dung">
+                <h2>👨‍🍳 Cách làm</h2>
+                <ol id="chiTietCachLam"></ol>
+            </div>
+
+            <div class="khoi-noi-dung">
+                <h2>🎥 Video hướng dẫn</h2>
+                <div id="khungVideo"></div>
+            </div>
+            <div class="khoi-noi-dung">
+                <h2>💬 Bình luận</h2>
+                <p class="video-chua-co">
+                    Phần bình luận sẽ được thêm sau.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <script src="cong-thuc.js"></script>
+    <script src="chi-tiet.js"></script>
+</body>
+</html>
