@@ -429,3 +429,148 @@ footer {
     transform: translateY(-8px);
     box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
 }
+/* ===== TÌM KIẾM MÓN ĂN ===== */
+
+[hidden] {
+    display: none !important;
+}
+
+.khu-tim-kiem {
+    padding: 40px 20px 0;
+    text-align: center;
+}
+
+.khu-tim-kiem h1 {
+    color: #4b251b;
+    font-size: clamp(26px, 4vw, 36px);
+}
+
+.khung-tim-kiem {
+    width: 100%;
+    max-width: 760px;
+    margin: 25px auto;
+    text-align: left;
+}
+
+.khung-tim-kiem label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #4b251b;
+}
+
+.hang-tim-kiem {
+    display: flex;
+    gap: 10px;
+}
+
+.hang-tim-kiem input {
+    flex: 1;
+    min-width: 0;
+    padding: 14px 18px;
+    border: 1px solid #d7b894;
+    border-radius: 10px;
+    background: white;
+    font: inherit;
+}
+
+.khung-tim-kiem button {
+    padding: 13px 22px;
+    border: none;
+    border-radius: 10px;
+    background: #a9470b;
+    color: white;
+    font: inherit;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.khung-tim-kiem button:hover {
+    background: #873807;
+}
+
+.khung-tim-kiem :focus-visible {
+    outline: 3px solid #8a4b08;
+    outline-offset: 3px;
+}
+
+.khung-tim-kiem .goi-y-tim-kiem {
+    margin: 10px 0 0;
+    color: #65513f;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.hang-bo-loc {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 18px;
+}
+
+.hang-bo-loc label {
+    margin-bottom: 0;
+}
+
+.hang-bo-loc select {
+    min-width: 0;
+    padding: 12px;
+    border: 1px solid #d7b894;
+    border-radius: 10px;
+    background: white;
+    color: #333;
+    font: inherit;
+}
+
+.khung-tim-kiem .nut-xoa {
+    background: #ffead2;
+    color: #873807;
+}
+
+.khung-tim-kiem .nut-xoa:hover {
+    background: #ffdbb1;
+}
+
+#soKetQua {
+    color: #65513f;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+#khongCoKetQua {
+    max-width: 760px;
+    margin: 25px auto;
+    padding: 35px 20px;
+    border-radius: 15px;
+    background: white;
+}
+
+#khongCoKetQua h2 {
+    margin-bottom: 12px;
+    color: #4b251b;
+}
+
+#khongCoKetQua p {
+    color: #666;
+}
+
+@media (max-width: 600px) {
+    .hang-tim-kiem {
+        flex-direction: column;
+    }
+
+    .hang-tim-kiem input,
+    .hang-tim-kiem button {
+        width: 100%;
+    }
+
+    .hang-bo-loc select {
+        flex: 1;
+    }
+
+    .hang-bo-loc .nut-xoa {
+        width: 100%;
+    }
+}

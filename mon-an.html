@@ -25,7 +25,48 @@
     </nav>
 
 </header>
+<section class="khu-tim-kiem">
+    <h1>Tìm món ngon cho gia đình</h1>
 
+    <form id="formTimKiem" class="khung-tim-kiem" role="search">
+        <label for="tuKhoa">Tên món ăn</label>
+
+        <div class="hang-tim-kiem">
+            <input
+                type="search"
+                id="tuKhoa"
+                name="q"
+                placeholder="Ví dụ: pho bo, ga chien, canh chua..."
+            >
+            <button type="submit">🔍 Tìm kiếm</button>
+        </div>
+
+        <div class="hang-bo-loc">
+            <label for="locDanhMuc">Danh mục:</label>
+
+            <select id="locDanhMuc" name="loai">
+                <option value="">Tất cả món ăn</option>
+                <option value="nuoc">Món nước</option>
+                <option value="canh">Món canh</option>
+                <option value="chien">Món chiên</option>
+                <option value="kho">Món khô</option>
+                <option value="xao">Món xào</option>
+                <option value="nuong">Món nướng</option>
+            </select>
+
+            <button type="button" id="xoaBoLoc" class="nut-xoa">
+                Xóa bộ lọc
+            </button>
+        </div>
+    </form>
+
+    <p id="soKetQua" role="status" aria-live="polite"></p>
+
+    <div id="khongCoKetQua" hidden>
+        <h2>Không tìm thấy món ăn phù hợp</h2>
+        <p>Thử từ khóa khác hoặc xóa bộ lọc nhé!</p>
+    </div>
+</section>
     <!-- DANH SÁCH MÓN -->
     <section class="danh-sach-mon">
         <!-- PHỞ BÒ -->
@@ -309,7 +350,7 @@
         </div>
 
     </section>
-
+<script src="script.js" defer></script>
 </body>
 
 </html>
