@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập - Hướng Dẫn Nấu Ăn</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            🍳 HƯỚNG DẪN NẤU ĂN
+        </div>
+
+        <nav>
+            <a href="index.html">Trang chủ</a>
+            <a href="mon-an.html">Món ăn</a>
+            <a href="danh-muc.html">Danh mục</a>
+            <a href="dang-cong-thuc.html" class="recipe-link">Đăng công thức</a>
+            <a href="dang-nhap.html" class="auth-link">Đăng nhập</a>
+        </nav>
+    </header>
+
+    <main class="auth-page">
+        <div class="auth-card">
+            <h1>Đăng nhập</h1>
+            <p class="auth-subtitle">Đăng nhập để đăng công thức món ăn của bạn.</p>
+
+            <form id="loginForm" class="form-box">
+                <label for="username">Tên đăng nhập</label>
+                <input type="text" id="username" name="username" placeholder="Nhập tên đăng nhập" required>
+
+                <label for="password">Mật khẩu</label>
+                <input type="password" id="password" name="password" placeholder="Nhập mật khẩu" required>
+
+                <button type="submit">Đăng nhập / Tạo tài khoản</button>
+            </form>
+
+            <p class="demo-account">Tài khoản demo: <strong>demo</strong> / <strong>123456</strong></p>
+            <p id="loginMessage" class="form-message"></p>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng công thức - Hướng Dẫn Nấu Ăn</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            🍳 HƯỚNG DẪN NẤU ĂN
+        </div>
+
+        <nav>
+            <a href="index.html">Trang chủ</a>
+            <a href="mon-an.html">Món ăn</a>
+            <a href="danh-muc.html">Danh mục</a>
+            <a href="dang-cong-thuc.html" class="recipe-link">Đăng công thức</a>
+            <a href="dang-nhap.html" class="auth-link">Đăng nhập</a>
+        </nav>
+    </header>
+
+    <main class="auth-page">
+        <div class="auth-card wide-card">
+            <h1>Đăng công thức mới</h1>
+            <p class="auth-subtitle">Chia sẻ món ăn ngon của bạn với cộng đồng.</p>
+
+            <form id="recipeForm" class="form-box">
+                <label for="recipeName">Tên món ăn</label>
+                <input type="text" id="recipeName" name="recipeName" placeholder="Ví dụ: Bánh xèo miền Tây" required>
+
+                <label for="recipeCategory">Danh mục</label>
+                <select id="recipeCategory" name="recipeCategory" required>
+                    <option value="">-- Chọn loại món --</option>
+                    <option value="nuoc">Món nước</option>
+                    <option value="canh">Món canh</option>
+                    <option value="chien">Món chiên</option>
+                    <option value="kho">Món khô</option>
+                    <option value="xao">Món xào</option>
+                    <option value="nuong">Món nướng</option>
+                </select>
+
+                <label for="recipeDescription">Mô tả ngắn</label>
+                <textarea id="recipeDescription" name="recipeDescription" rows="3" placeholder="Mô tả món ăn của bạn..." required></textarea>
+
+                <label for="recipeIngredients">Nguyên liệu</label>
+                <textarea id="recipeIngredients" name="recipeIngredients" rows="5" placeholder="Mỗi dòng một nguyên liệu" required></textarea>
+
+                <label for="recipeSteps">Cách làm</label>
+                <textarea id="recipeSteps" name="recipeSteps" rows="6" placeholder="Mỗi dòng một bước làm" required></textarea>
+
+                <label for="recipeImage">URL ảnh món ăn</label>
+                <input type="url" id="recipeImage" name="recipeImage" placeholder="https://.../anh-mon.jpg">
+
+                <button type="submit">Đăng công thức</button>
+            </form>
+
+            <p id="recipeMessage" class="form-message"></p>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
