@@ -863,6 +863,30 @@ footer {
     margin-bottom: 25px;
 }
 
+.auth-mode {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 22px;
+}
+
+.auth-mode button {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #e2b77d;
+    border-radius: 8px;
+    background: #fffdf8;
+    color: #4b251b;
+    font: inherit;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.auth-mode button[aria-pressed="true"] {
+    border-color: #e67e22;
+    background: #e67e22;
+    color: white;
+}
+
 .form-box {
     display: flex;
     flex-direction: column;

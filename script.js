@@ -1,3 +1,34 @@
+const API_BASE_URL = window.APP_CONFIG?.apiBaseUrl || "http://127.0.0.1:8000";
+
+async function apiRequest(path, options = {}) {
+    const headers = { ...(options.headers || {}) };
+    if (options.body) headers["Content-Type"] = "application/json";
+
+    const token = localStorage.getItem("authToken");
+    if (token) headers.Authorization = `Bearer ${token}`;
+
+    let response;
+    try {
+        response = await fetch(`${API_BASE_URL}${path}`, { ...options, headers });
+    } catch {
+        throw new Error("Không thể kết nối máy chủ. Hãy kiểm tra backend đang chạy.");
+    }
+
+    const result = response.status === 204
+        ? null
+        : await response.json().catch(() => null);
+
+    if (!response.ok) {
+        const detail = result?.detail;
+        const message = Array.isArray(detail)
+            ? detail.map(item => item.msg).join(" ")
+            : detail || "Yêu cầu không thành công.";
+        throw new Error(message);
+    }
+
+    return result;
+}
+
 // Mở và đóng hộp gợi ý ở trang chủ.
 function moGoiY() {
     const hop = document.getElementById("hopGoiY");
@@ -31,22 +62,30 @@ function setCurrentUser(user) {
         saveLocalStorage("currentUser", user);
     } else {
         localStorage.removeItem("currentUser");
+        localStorage.removeItem("authToken");
     }
 }
 
 function updateAuthUI() {
     const authLink = document.querySelector(".auth-link");
     const recipeLink = document.querySelector(".recipe-link");
-    const currentUser = getCurrentUser();
+    const currentUser = localStorage.getItem("authToken")
+        ? getCurrentUser()
+        : null;
 
     if (!authLink) return;
 
     if (currentUser) {
         authLink.textContent = `Xin chào, ${currentUser.username}`;
         authLink.href = "#";
-        authLink.addEventListener("click", function (event) {
+        authLink.addEventListener("click", async function (event) {
             event.preventDefault();
             if (confirm("Bạn muốn đăng xuất?")) {
+                try {
+                    await apiRequest("/api/auth/logout", { method: "POST" });
+                } catch {
+                    // Dù API không sẵn sàng, phiên trên trình duyệt vẫn được xóa.
+                }
                 setCurrentUser(null);
                 updateAuthUI();
                 window.location.href = "index.html";
@@ -67,15 +106,40 @@ function setupLogin() {
     if (!form) return;
 
     const message = document.getElementById("loginMessage");
-    const users = getLocalStorage("users", [
-        { username: "demo", password: "123456" }
-    ]);
+    const title = document.getElementById("authTitle");
+    const subtitle = document.getElementById("authSubtitle");
+    const loginMode = document.getElementById("loginMode");
+    const registerMode = document.getElementById("registerMode");
+    const confirmPasswordField = document.getElementById("confirmPasswordField");
+    const confirmPassword = document.getElementById("confirmPassword");
+    const submitButton = document.getElementById("authSubmit");
+    let isRegistering = false;
 
-    form.addEventListener("submit", function (event) {
+    function setMode(registering) {
+        isRegistering = registering;
+        title.textContent = registering ? "Đăng ký" : "Đăng nhập";
+        subtitle.textContent = registering
+            ? "Tạo tài khoản để chia sẻ công thức món ăn của bạn."
+            : "Đăng nhập để đăng công thức món ăn của bạn.";
+        submitButton.textContent = registering ? "Tạo tài khoản" : "Đăng nhập";
+        confirmPasswordField.hidden = !registering;
+        confirmPassword.required = registering;
+        document.getElementById("password").autocomplete = registering
+            ? "new-password"
+            : "current-password";
+        loginMode.setAttribute("aria-pressed", String(!registering));
+        registerMode.setAttribute("aria-pressed", String(registering));
+        message.textContent = "";
+    }
+
+    loginMode.addEventListener("click", () => setMode(false));
+    registerMode.addEventListener("click", () => setMode(true));
+
+    form.addEventListener("submit", async function (event) {
         event.preventDefault();
 
         const username = document.getElementById("username").value.trim();
-        const password = document.getElementById("password").value.trim();
+        const password = document.getElementById("password").value;
 
         if (!username || !password) {
             message.textContent = "Vui lòng nhập đầy đủ thông tin.";
@@ -83,34 +147,33 @@ function setupLogin() {
             return;
         }
 
-        const user = users.find(u => u.username === username && u.password === password);
-
-        if (user) {
-            setCurrentUser({ username: user.username });
-            message.textContent = "Đăng nhập thành công!";
-            message.style.color = "#2e7d32";
-            setTimeout(() => {
-                window.location.href = "dang-cong-thuc.html";
-            }, 500);
-            return;
-        }
-
-        const existedUser = users.some(u => u.username === username);
-
-        if (existedUser) {
-            message.textContent = "Mật khẩu không đúng.";
+        if (isRegistering && password !== confirmPassword.value) {
+            message.textContent = "Mật khẩu xác nhận không khớp.";
             message.style.color = "#b00020";
             return;
         }
 
-        users.push({ username, password });
-        saveLocalStorage("users", users);
-        setCurrentUser({ username });
-        message.textContent = "Tạo tài khoản thành công!";
-        message.style.color = "#2e7d32";
-        setTimeout(() => {
-            window.location.href = "dang-cong-thuc.html";
-        }, 500);
+        try {
+            const result = await apiRequest(
+                isRegistering ? "/api/auth/register" : "/api/auth/login",
+                {
+                    method: "POST",
+                    body: JSON.stringify({ username, password })
+                }
+            );
+            localStorage.setItem("authToken", result.access_token);
+            setCurrentUser(result.user);
+            message.textContent = isRegistering
+                ? "Tạo tài khoản thành công!"
+                : "Đăng nhập thành công!";
+            message.style.color = "#2e7d32";
+            setTimeout(() => {
+                window.location.href = "dang-cong-thuc.html";
+            }, 500);
+        } catch (error) {
+            message.textContent = error.message;
+            message.style.color = "#b00020";
+        }
     });
 }
 
@@ -119,7 +182,9 @@ function setupRecipeForm() {
     if (!form) return;
 
     const message = document.getElementById("recipeMessage");
-    const currentUser = getCurrentUser();
+    const currentUser = localStorage.getItem("authToken")
+        ? getCurrentUser()
+        : null;
 
     if (!currentUser) {
         message.textContent = "Bạn cần đăng nhập để đăng công thức.";
@@ -130,7 +195,7 @@ function setupRecipeForm() {
         return;
     }
 
-    form.addEventListener("submit", function (event) {
+    form.addEventListener("submit", async function (event) {
         event.preventDefault();
 
         const recipeName = document.getElementById("recipeName").value.trim();
@@ -144,7 +209,7 @@ function setupRecipeForm() {
             .split(/\n+/)
             .map(item => item.trim())
             .filter(Boolean);
-        const recipeImage = document.getElementById("recipeImage").value.trim() || "images/default-food.jpg";
+        const recipeImage = document.getElementById("recipeImage").value.trim() || "images/Com chien.jpg";
 
         if (!recipeName || !recipeCategory || !recipeDescription || recipeIngredients.length === 0 || recipeSteps.length === 0) {
             message.textContent = "Vui lòng điền đầy đủ thông tin.";
@@ -152,105 +217,83 @@ function setupRecipeForm() {
             return;
         }
 
-        const recipes = getLocalStorage("recipes", []);
-
-        recipes.unshift({
-            id: Date.now() + "-" + Math.random().toString(16).slice(2),
-            ten: recipeName,
-            loai: recipeCategory,
-            moTa: recipeDescription,
-            anh: recipeImage,
-            nguyenLieu: recipeIngredients,
-            cachLam: recipeSteps,
-            nguoiDang: currentUser.username
-        });
-
-        saveLocalStorage("recipes", recipes);
-        message.textContent = "Đăng công thức thành công!";
-        message.style.color = "#2e7d32";
-        form.reset();
-    });
-}
-
-function deleteRecipeById(recipeId) {
-    const currentUser = getCurrentUser();
-    const recipes = getLocalStorage("recipes", []);
-    const remainingRecipes = recipes.filter(function (recipe) {
-        const id = recipe.id || recipe.ten;
-        return id !== recipeId;
-    });
-
-    saveLocalStorage("recipes", remainingRecipes);
-
-    if (!currentUser) {
-        return;
-    }
-
-    const danhSach = document.querySelector(".danh-sach-mon");
-    if (danhSach) {
-        const targetCard = danhSach.querySelector("[data-recipe-id='" + recipeId + "']");
-        if (targetCard) {
-            targetCard.remove();
+        try {
+            await apiRequest("/api/recipes", {
+                method: "POST",
+                body: JSON.stringify({
+                    title: recipeName,
+                    category: recipeCategory,
+                    description: recipeDescription,
+                    image_url: recipeImage,
+                    ingredients: recipeIngredients,
+                    steps: recipeSteps
+                })
+            });
+            message.textContent = "Đăng công thức thành công!";
+            message.style.color = "#2e7d32";
+            form.reset();
+        } catch (error) {
+            message.textContent = error.message;
+            message.style.color = "#b00020";
         }
-    }
+    });
 }
 
-function renderSavedRecipes() {
+async function renderSavedRecipes() {
     const danhSach = document.querySelector(".danh-sach-mon");
     if (!danhSach) return;
 
-    const savedRecipes = getLocalStorage("recipes", []);
-    if (savedRecipes.length === 0) return;
+    let savedRecipes;
+    try {
+        savedRecipes = await apiRequest("/api/recipes");
+    } catch (error) {
+        console.error(error.message);
+        return;
+    }
 
     savedRecipes.forEach(function (recipe) {
         const card = document.createElement("div");
-        const recipeId = recipe.id || recipe.ten;
+        const recipeId = recipe.id;
 
         card.className = "mon-card recipe-card";
         card.dataset.recipeId = recipeId;
-        card.innerHTML = `
-            <img src="${recipe.anh || 'images/default-food.jpg'}" alt="${recipe.ten}">
-            <h2>${recipe.ten}</h2>
-            <p>${recipe.moTa}</p>
-            <span>${getRecipeLabel(recipe.loai)}</span>
-            <button type="button" class="delete-recipe-btn" data-recipe-id="${recipeId}">Xóa</button>
-        `;
-
-        const danhMucMap = {
-            nuoc: "Món nước",
-            canh: "Món canh",
-            chien: "Món chiên",
-            kho: "Món khô",
-            xao: "Món xào",
-            nuong: "Món nướng"
-        };
+        const image = document.createElement("img");
+        image.src = recipe.image_url || "images/Com chien.jpg";
+        image.alt = recipe.title;
+        const title = document.createElement("h2");
+        title.textContent = recipe.title;
+        const description = document.createElement("p");
+        description.textContent = recipe.description || "";
+        const category = document.createElement("span");
+        category.textContent = recipe.category;
+        card.append(image, title, description, category);
 
         card.addEventListener("click", function (event) {
             if (event.target.closest(".delete-recipe-btn")) {
                 return;
             }
-            window.location.href = `chi-tiet-mon.html?mon=${encodeURIComponent(recipe.ten)}`;
+            window.location.href = `chi-tiet-mon.html?id=${recipeId}`;
         });
 
-        const deleteButton = card.querySelector(".delete-recipe-btn");
-        deleteButton.addEventListener("click", function (event) {
-            event.stopPropagation();
-            const currentUser = getCurrentUser();
-            const recipeOwner = recipe.nguoiDang || "";
+        const currentUser = getCurrentUser();
+        if (currentUser && currentUser.username === recipe.author) {
+            const deleteButton = document.createElement("button");
+            deleteButton.type = "button";
+            deleteButton.className = "delete-recipe-btn";
+            deleteButton.textContent = "Xóa";
+            deleteButton.addEventListener("click", async function (event) {
+                event.stopPropagation();
+                if (!confirm("Bạn có chắc muốn xóa công thức này không?")) return;
+                try {
+                    await apiRequest(`/api/recipes/${recipeId}`, { method: "DELETE" });
+                    card.remove();
+                } catch (error) {
+                    alert(error.message);
+                }
+            });
+            card.appendChild(deleteButton);
+        }
 
-            if (!currentUser || currentUser.username !== recipeOwner) {
-                alert("Bạn không có quyền xóa công thức này.");
-                return;
-            }
-
-            const ok = confirm("Bạn có chắc muốn xóa công thức này không?");
-            if (!ok) return;
-
-            deleteRecipeById(recipeId);
-            card.remove();
-        });
-
-        card.querySelector("span").textContent = danhMucMap[recipe.loai] || "Món ăn";
         danhSach.appendChild(card);
     });
 }
@@ -414,11 +457,11 @@ function khoiTaoTimKiem() {
     docBoLocTuURL();
 }
 
-function initApp() {
+async function initApp() {
     updateAuthUI();
     setupLogin();
     setupRecipeForm();
-    renderSavedRecipes();
+    await renderSavedRecipes();
     khoiTaoTimKiem();
 }
 

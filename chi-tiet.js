@@ -1,4 +1,4 @@
-const API_URL = "http://127.0.0.1:8000";
+const API_URL = window.APP_CONFIG?.apiBaseUrl || "http://127.0.0.1:8000";
 const thamSo = new URLSearchParams(window.location.search);
 
 const recipeId = thamSo.get("id");
@@ -77,6 +77,10 @@ function hienThiCongThuc(recipe) {
 
     document.getElementById("chiTietThoiGian").textContent =
         recipe.cook_time || "Chưa cập nhật";
+    document.getElementById("chiTietKhauPhan").textContent =
+        recipe.servings || "2–4 người";
+    document.getElementById("chiTietDoKho").textContent =
+        recipe.difficulty || "Dễ";
 
     const danhSachNguyenLieu = document.getElementById("chiTietNguyenLieu");
     danhSachNguyenLieu.innerHTML = "";
@@ -87,7 +91,7 @@ function hienThiCongThuc(recipe) {
         if (typeof item === "string") {
             li.textContent = item;
         } else {
-            li.textContent = `${item.amount} ${item.name}`;
+            li.textContent = [item.amount, item.name].filter(Boolean).join(" ");
         }
 
         danhSachNguyenLieu.appendChild(li);

@@ -25,24 +25,34 @@
 
     <main class="auth-page">
         <div class="auth-card">
-            <h1>Đăng nhập</h1>
-            <p class="auth-subtitle">Đăng nhập để đăng công thức món ăn của bạn.</p>
+            <h1 id="authTitle">Đăng nhập</h1>
+            <p id="authSubtitle" class="auth-subtitle">Đăng nhập để đăng công thức món ăn của bạn.</p>
+
+            <div class="auth-mode" role="group" aria-label="Chọn hình thức tài khoản">
+                <button type="button" id="loginMode" aria-pressed="true">Đăng nhập</button>
+                <button type="button" id="registerMode" aria-pressed="false">Đăng ký</button>
+            </div>
 
             <form id="loginForm" class="form-box">
                 <label for="username">Tên đăng nhập</label>
-                <input type="text" id="username" name="username" placeholder="Nhập tên đăng nhập" required>
+                <input type="text" id="username" name="username" placeholder="Nhập tên đăng nhập" autocomplete="username" required>
 
                 <label for="password">Mật khẩu</label>
-                <input type="password" id="password" name="password" placeholder="Nhập mật khẩu" required>
+                <input type="password" id="password" name="password" placeholder="Nhập mật khẩu" autocomplete="current-password" required>
 
-                <button type="submit">Đăng nhập / Tạo tài khoản</button>
+                <div id="confirmPasswordField" hidden>
+                    <label for="confirmPassword">Xác nhận mật khẩu</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Nhập lại mật khẩu" autocomplete="new-password">
+                </div>
+
+                <button type="submit" id="authSubmit">Đăng nhập</button>
             </form>
 
-            <p class="demo-account">Tài khoản demo: <strong>demo</strong> / <strong>123456</strong></p>
             <p id="loginMessage" class="form-message"></p>
         </div>
     </main>
 
+    <script src="config.js"></script>
     <script src="script.js"></script>
 </body>
 
