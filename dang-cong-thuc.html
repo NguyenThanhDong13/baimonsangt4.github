@@ -25,7 +25,7 @@
 
     <main class="auth-page">
         <div class="auth-card wide-card">
-            <h1>Đăng công thức mới</h1>
+            <h1 id="recipeFormTitle">Đăng công thức mới</h1>
             <p class="auth-subtitle">Chia sẻ món ăn ngon của bạn với cộng đồng.</p>
 
             <form id="recipeForm" class="form-box">
@@ -46,6 +46,15 @@
                 <label for="recipeDescription">Mô tả ngắn</label>
                 <textarea id="recipeDescription" name="recipeDescription" rows="3" placeholder="Mô tả món ăn của bạn..." required></textarea>
 
+                <label for="recipeCookTime">Thời gian nấu</label>
+                <input type="text" id="recipeCookTime" name="recipeCookTime" placeholder="Ví dụ: 30 phút">
+
+                <label for="recipeServings">Khẩu phần</label>
+                <input type="text" id="recipeServings" name="recipeServings" placeholder="Ví dụ: 2–4 người">
+
+                <label for="recipeDifficulty">Độ khó</label>
+                <input type="text" id="recipeDifficulty" name="recipeDifficulty" placeholder="Ví dụ: Dễ">
+
                 <label for="recipeIngredients">Nguyên liệu</label>
                 <textarea id="recipeIngredients" name="recipeIngredients" rows="5" placeholder="Mỗi dòng một nguyên liệu" required></textarea>
 
@@ -53,12 +62,16 @@
                 <textarea id="recipeSteps" name="recipeSteps" rows="6" placeholder="Mỗi dòng một bước làm" required></textarea>
 
                 <label for="recipeImage">URL ảnh món ăn</label>
-                <input type="url" id="recipeImage" name="recipeImage" placeholder="https://.../anh-mon.jpg">
+                <input type="text" id="recipeImage" name="recipeImage" inputmode="url" placeholder="https://.../anh-mon.jpg hoặc đường dẫn ảnh">
+
+                <label for="recipeVideo">URL video hướng dẫn</label>
+                <input type="url" id="recipeVideo" name="recipeVideo" placeholder="https://www.youtube.com/watch?v=...">
 
                 <button type="submit">Đăng công thức</button>
             </form>
 
             <p id="recipeMessage" class="form-message"></p>
+            <p id="recipeResultLink" class="form-message" hidden></p>
         </div>
     </main>
 

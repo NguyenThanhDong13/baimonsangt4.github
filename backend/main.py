@@ -312,6 +312,40 @@ def chuyen_cong_thuc_thanh_json(recipe, co_chi_tiet=False):
     return du_lieu
 
 
+def cap_nhat_noi_dung_cong_thuc(
+    recipe: Recipe,
+    payload: RecipeInput,
+    category: Category,
+    db: DatabaseSession
+) -> None:
+    recipe.title = payload.title
+    recipe.description = payload.description
+    recipe.image_url = payload.image_url
+    recipe.video_url = payload.video_url
+    recipe.cook_time = payload.cook_time
+    recipe.servings = payload.servings
+    recipe.difficulty = payload.difficulty
+    recipe.category = category
+    recipe.ingredient_links.clear()
+    recipe.steps.clear()
+
+    for name in payload.ingredients:
+        ingredient = db.scalar(select(Ingredient).where(Ingredient.name == name))
+        if not ingredient:
+            ingredient = Ingredient(name=name)
+            db.add(ingredient)
+            db.flush()
+        recipe.ingredient_links.append(RecipeIngredient(
+            ingredient=ingredient,
+            amount=""
+        ))
+
+    recipe.steps.extend(
+        CookingStep(step_number=index, content=content)
+        for index, content in enumerate(payload.steps, start=1)
+    )
+
+
 @app.get("/api/recipes")
 def lay_danh_sach_cong_thuc():
     db = SessionLocal()
@@ -343,36 +377,9 @@ def tao_cong_thuc(
     if not category:
         raise HTTPException(status_code=400, detail="Danh mục chưa được khởi tạo")
 
-    recipe = Recipe(
-        title=payload.title,
-        description=payload.description,
-        image_url=payload.image_url,
-        video_url=payload.video_url,
-        cook_time=payload.cook_time,
-        servings=payload.servings,
-        difficulty=payload.difficulty,
-        category_id=category.id,
-        author_id=user.id
-    )
+    recipe = Recipe(category=category, author=user)
     db.add(recipe)
-    db.flush()
-
-    for name in payload.ingredients:
-        ingredient = db.scalar(select(Ingredient).where(Ingredient.name == name))
-        if not ingredient:
-            ingredient = Ingredient(name=name)
-            db.add(ingredient)
-            db.flush()
-        db.add(RecipeIngredient(
-            recipe_id=recipe.id,
-            ingredient_id=ingredient.id,
-            amount=""
-        ))
-
-    db.add_all(
-        CookingStep(recipe_id=recipe.id, step_number=index, content=content)
-        for index, content in enumerate(payload.steps, start=1)
-    )
+    cap_nhat_noi_dung_cong_thuc(recipe, payload, category, db)
     db.commit()
     return chuyen_cong_thuc_thanh_json(recipe, co_chi_tiet=True)
 
@@ -393,6 +400,32 @@ def lay_chi_tiet_cong_thuc(recipe_id: int):
         return chuyen_cong_thuc_thanh_json(recipe, co_chi_tiet=True)
     finally:
         db.close()
+
+
+@app.put("/api/recipes/{recipe_id}")
+def cap_nhat_cong_thuc(
+    recipe_id: int,
+    payload: RecipeInput,
+    user: User = Depends(get_current_user),
+    db: DatabaseSession = Depends(get_db)
+):
+    recipe = db.get(Recipe, recipe_id)
+    if not recipe:
+        raise HTTPException(status_code=404, detail="Không tìm thấy công thức")
+    if recipe.author_id != user.id:
+        raise HTTPException(status_code=403, detail="Bạn không có quyền sửa công thức này")
+
+    category_name = DANH_MUC.get(payload.category, payload.category)
+    if category_name not in DANH_MUC.values():
+        raise HTTPException(status_code=400, detail="Danh mục không hợp lệ")
+
+    category = db.scalar(select(Category).where(Category.name == category_name))
+    if not category:
+        raise HTTPException(status_code=400, detail="Danh mục chưa được khởi tạo")
+
+    cap_nhat_noi_dung_cong_thuc(recipe, payload, category, db)
+    db.commit()
+    return chuyen_cong_thuc_thanh_json(recipe, co_chi_tiet=True)
 
 
 @app.delete("/api/recipes/{recipe_id}", status_code=status.HTTP_204_NO_CONTENT)

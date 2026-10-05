@@ -177,22 +177,66 @@ function setupLogin() {
     });
 }
 
-function setupRecipeForm() {
+async function setupRecipeForm() {
     const form = document.getElementById("recipeForm");
     if (!form) return;
 
     const message = document.getElementById("recipeMessage");
+    const resultLink = document.getElementById("recipeResultLink");
+    const formTitle = document.getElementById("recipeFormTitle");
+    const submitButton = form.querySelector('button[type="submit"]');
+    const recipeId = new URLSearchParams(window.location.search).get("id");
     const currentUser = localStorage.getItem("authToken")
         ? getCurrentUser()
         : null;
+    const setFormEnabled = enabled => {
+        form.querySelectorAll("input, textarea, select, button").forEach(el => {
+            el.disabled = !enabled;
+        });
+    };
 
     if (!currentUser) {
         message.textContent = "Bạn cần đăng nhập để đăng công thức.";
         message.style.color = "#b00020";
-        form.querySelectorAll("input, textarea, select, button").forEach(el => {
-            el.disabled = true;
-        });
+        setFormEnabled(false);
         return;
+    }
+
+    if (recipeId) {
+        setFormEnabled(false);
+        message.textContent = "Đang tải công thức...";
+        message.style.color = "";
+
+        try {
+            const recipe = await apiRequest(`/api/recipes/${recipeId}`);
+            if (recipe.author !== currentUser.username) {
+                throw new Error("Bạn không có quyền sửa công thức này.");
+            }
+
+            document.getElementById("recipeName").value = recipe.title || "";
+            document.getElementById("recipeCategory").value = recipe.category_code || "";
+            document.getElementById("recipeDescription").value = recipe.description || "";
+            document.getElementById("recipeCookTime").value = recipe.cook_time || "";
+            document.getElementById("recipeServings").value = recipe.servings || "";
+            document.getElementById("recipeDifficulty").value = recipe.difficulty || "";
+            document.getElementById("recipeIngredients").value = (recipe.ingredients || [])
+                .map(item => typeof item === "string" ? item : [item.amount, item.name].filter(Boolean).join(" "))
+                .join("\n");
+            document.getElementById("recipeSteps").value = (recipe.steps || [])
+                .map(item => typeof item === "string" ? item : item.content)
+                .join("\n");
+            document.getElementById("recipeImage").value = recipe.image_url || "";
+            document.getElementById("recipeVideo").value = recipe.video_url || "";
+            formTitle.textContent = "Sửa công thức";
+            submitButton.textContent = "Lưu thay đổi";
+            message.textContent = "";
+            setFormEnabled(true);
+        } catch (error) {
+            message.textContent = error.message;
+            message.style.color = "#b00020";
+            setFormEnabled(false);
+            return;
+        }
     }
 
     form.addEventListener("submit", async function (event) {
@@ -209,7 +253,8 @@ function setupRecipeForm() {
             .split(/\n+/)
             .map(item => item.trim())
             .filter(Boolean);
-        const recipeImage = document.getElementById("recipeImage").value.trim() || "images/Com chien.jpg";
+        const recipeImage = document.getElementById("recipeImage").value.trim();
+        const recipeVideo = document.getElementById("recipeVideo").value.trim();
 
         if (!recipeName || !recipeCategory || !recipeDescription || recipeIngredients.length === 0 || recipeSteps.length === 0) {
             message.textContent = "Vui lòng điền đầy đủ thông tin.";
@@ -217,24 +262,42 @@ function setupRecipeForm() {
             return;
         }
 
+        submitButton.disabled = true;
         try {
-            await apiRequest("/api/recipes", {
-                method: "POST",
-                body: JSON.stringify({
-                    title: recipeName,
-                    category: recipeCategory,
-                    description: recipeDescription,
-                    image_url: recipeImage,
-                    ingredients: recipeIngredients,
-                    steps: recipeSteps
-                })
-            });
-            message.textContent = "Đăng công thức thành công!";
+            const recipe = await apiRequest(
+                recipeId ? `/api/recipes/${recipeId}` : "/api/recipes",
+                {
+                    method: recipeId ? "PUT" : "POST",
+                    body: JSON.stringify({
+                        title: recipeName,
+                        category: recipeCategory,
+                        description: recipeDescription,
+                        image_url: recipeImage || "images/Com chien.jpg",
+                        video_url: recipeVideo || null,
+                        cook_time: document.getElementById("recipeCookTime").value.trim() || null,
+                        servings: document.getElementById("recipeServings").value.trim() || null,
+                        difficulty: document.getElementById("recipeDifficulty").value.trim() || null,
+                        ingredients: recipeIngredients,
+                        steps: recipeSteps
+                    })
+                }
+            );
+            message.textContent = recipeId
+                ? "Cập nhật công thức thành công!"
+                : "Đăng công thức thành công!";
             message.style.color = "#2e7d32";
-            form.reset();
+            if (!recipeId) form.reset();
+            resultLink.replaceChildren();
+            const detailsLink = document.createElement("a");
+            detailsLink.href = `chi-tiet-mon.html?id=${recipe.id}`;
+            detailsLink.textContent = "Xem công thức";
+            resultLink.appendChild(detailsLink);
+            resultLink.hidden = false;
         } catch (error) {
             message.textContent = error.message;
             message.style.color = "#b00020";
+        } finally {
+            submitButton.disabled = false;
         }
     });
 }
@@ -269,7 +332,7 @@ async function renderSavedRecipes() {
         card.append(image, title, description, category);
 
         card.addEventListener("click", function (event) {
-            if (event.target.closest(".delete-recipe-btn")) {
+            if (event.target.closest(".recipe-card-actions")) {
                 return;
             }
             window.location.href = `chi-tiet-mon.html?id=${recipeId}`;
@@ -277,6 +340,15 @@ async function renderSavedRecipes() {
 
         const currentUser = getCurrentUser();
         if (currentUser && currentUser.username === recipe.author) {
+            const actions = document.createElement("div");
+            actions.className = "recipe-card-actions";
+            actions.addEventListener("click", event => event.stopPropagation());
+
+            const editLink = document.createElement("a");
+            editLink.className = "edit-recipe-btn";
+            editLink.href = `dang-cong-thuc.html?id=${recipeId}`;
+            editLink.textContent = "Sửa";
+
             const deleteButton = document.createElement("button");
             deleteButton.type = "button";
             deleteButton.className = "delete-recipe-btn";
@@ -291,7 +363,8 @@ async function renderSavedRecipes() {
                     alert(error.message);
                 }
             });
-            card.appendChild(deleteButton);
+            actions.append(editLink, deleteButton);
+            card.appendChild(actions);
         }
 
         danhSach.appendChild(card);
@@ -460,7 +533,7 @@ function khoiTaoTimKiem() {
 async function initApp() {
     updateAuthUI();
     setupLogin();
-    setupRecipeForm();
+    await setupRecipeForm();
     await renderSavedRecipes();
     khoiTaoTimKiem();
 }

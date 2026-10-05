@@ -82,6 +82,8 @@ function hienThiCongThuc(recipe) {
     document.getElementById("chiTietDoKho").textContent =
         recipe.difficulty || "Dễ";
 
+    hienThiNutQuanLyCongThuc(recipe);
+
     const danhSachNguyenLieu = document.getElementById("chiTietNguyenLieu");
     danhSachNguyenLieu.innerHTML = "";
 
@@ -108,30 +110,69 @@ function hienThiCongThuc(recipe) {
 
     const khungVideo = document.getElementById("khungVideo");
 
-    if (recipe.video_url) {
-        let linkVideo = recipe.video_url;
+    khungVideo.replaceChildren();
+    const videoId = layIdVideoYouTube(recipe.video_url);
+    if (videoId) {
+        const iframe = document.createElement("iframe");
+        iframe.src = `https://www.youtube.com/embed/${videoId}`;
+        iframe.title = `Video hướng dẫn ${tenMon}`;
+        iframe.allowFullscreen = true;
+        khungVideo.appendChild(iframe);
+    } else {
+        const placeholder = document.createElement("p");
+        placeholder.className = "video-chua-co";
+        placeholder.textContent = "Món ăn này chưa có video hướng dẫn.";
+        khungVideo.appendChild(placeholder);
+    }
+}
 
-        if (linkVideo.includes("watch?v=")) {
-            linkVideo = linkVideo.replace("watch?v=", "embed/");
-        } else if (linkVideo.includes("youtu.be/")) {
-            const videoId = linkVideo.split("youtu.be/")[1].split("?")[0];
-            linkVideo = `https://www.youtube.com/embed/${videoId}`;
+function layIdVideoYouTube(link) {
+    if (!link) return null;
+
+    try {
+        const url = new URL(link);
+        if (url.protocol !== "https:") return null;
+
+        let videoId = null;
+        if (url.hostname === "youtu.be") {
+            videoId = url.pathname.slice(1);
+        } else if (["youtube.com", "www.youtube.com", "m.youtube.com"].includes(url.hostname)) {
+            if (url.pathname === "/watch") {
+                videoId = url.searchParams.get("v");
+            } else {
+                const match = url.pathname.match(/^\/(?:embed|shorts)\/([A-Za-z0-9_-]{11})$/);
+                videoId = match?.[1] || null;
+            }
         }
 
-        khungVideo.innerHTML = `
-            <iframe
-                src="${linkVideo}"
-                title="Video hướng dẫn ${tenMon}"
-                allowfullscreen>
-            </iframe>
-        `;
-    } else {
-        khungVideo.innerHTML = `
-            <p class="video-chua-co">
-                Món ăn này chưa có video hướng dẫn.
-            </p>
-        `;
+        return videoId && /^[A-Za-z0-9_-]{11}$/.test(videoId) ? videoId : null;
+    } catch {
+        return null;
     }
+}
+
+function hienThiNutQuanLyCongThuc(recipe) {
+    const actions = document.getElementById("recipeOwnerActions");
+    const currentUser = getCurrentUser();
+    if (!recipe.id || !currentUser || currentUser.username !== recipe.author) return;
+
+    const editLink = document.getElementById("editRecipeLink");
+    const deleteButton = document.getElementById("deleteRecipeButton");
+    editLink.href = `dang-cong-thuc.html?id=${recipe.id}`;
+    actions.hidden = false;
+
+    deleteButton.addEventListener("click", async function () {
+        if (!confirm("Bạn có chắc muốn xóa công thức này không?")) return;
+
+        deleteButton.disabled = true;
+        try {
+            await apiRequest(`/api/recipes/${recipe.id}`, { method: "DELETE" });
+            window.location.href = "mon-an.html";
+        } catch (error) {
+            alert(error.message);
+            deleteButton.disabled = false;
+        }
+    });
 }
 
 function hienThiThongBaoLoi(noiDung) {
