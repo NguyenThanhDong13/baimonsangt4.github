@@ -309,11 +309,28 @@ async function renderSavedRecipes() {
     let savedRecipes;
     try {
         savedRecipes = await apiRequest("/api/recipes");
-    } catch (error) {
+     } catch (error) {
         console.error(error.message);
-        return;
-    }
 
+        danhSach.replaceChildren();
+        danhSach.hidden = false;
+
+        const thongBao = document.createElement("p");
+        thongBao.setAttribute("role", "alert");
+        thongBao.textContent =
+            "Không thể kết nối máy chủ để tải món ăn. Vui lòng thử lại sau.";
+        danhSach.appendChild(thongBao);
+
+        const soKetQua = document.getElementById("soKetQua");
+        if (soKetQua) soKetQua.textContent = "";
+
+        const khongCoKetQua = document.getElementById("khongCoKetQua");
+        if (khongCoKetQua) khongCoKetQua.hidden = true;
+
+        return false;
+    }
+    // Thay các thẻ món HTML bằng danh sách đã tải từ database.
+    danhSach.replaceChildren();
     savedRecipes.forEach(function (recipe) {
         const card = document.createElement("div");
         const recipeId = recipe.id;
@@ -534,8 +551,10 @@ async function initApp() {
     updateAuthUI();
     setupLogin();
     await setupRecipeForm();
-    await renderSavedRecipes();
-    khoiTaoTimKiem();
+    const ketQuaTaiMon = await renderSavedRecipes();
+    if (ketQuaTaiMon !== false) {
+        khoiTaoTimKiem();
+    }
 }
 
 // Đợi HTML tải xong rồi mới tìm các phần tử.

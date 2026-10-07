@@ -1,0 +1,348 @@
+[
+  {
+    "title": "Đậu xốt cà chua",
+    "category": "Món xào",
+    "description": "Món ngon thích hợp cho bữa cơm gia đình",
+    "image_url": "images/Dau xot ca chua.jpg",
+    "cook_time": "25 phút",
+    "video_url": null,
+    "ingredients": [
+      "300g đậu phụ",
+      "3 quả cà chua",
+      "Hành lá",
+      "Tỏi",
+      "Dầu ăn",
+      "Nước mắm",
+      "Đường",
+      "Muối"
+    ],
+    "steps": [
+      "Đậu phụ cắt miếng vừa ăn rồi chiên vàng.",
+      "Cà chua rửa sạch, cắt nhỏ.",
+      "Phi thơm tỏi, cho cà chua vào xào mềm.",
+      "Nêm nước mắm, đường và muối vừa ăn.",
+      "Cho đậu phụ vào sốt khoảng 5–7 phút.",
+      "Thêm hành lá rồi tắt bếp."
+    ]
+  },
+  {
+    "title": "Cơm chiên",
+    "category": "Món chiên",
+    "description": "Cơm chiên đơn giản, dễ làm",
+    "image_url": "images/Com chien.jpg",
+    "cook_time": "25 phút",
+    "video_url": "https://www.youtube.com/watch?v=_cdBAMq5KZ0",
+    "ingredients": [
+      "2 bát cơm nguội",
+      "2 quả trứng",
+      "Cà rốt",
+      "Đậu Hà Lan",
+      "Hành lá",
+      "Dầu ăn",
+      "Nước mắm",
+      "Tiêu"
+    ],
+    "steps": [
+      "Làm tơi cơm nguội.",
+      "Đánh đều trứng với một ít gia vị.",
+      "Phi thơm hành, cho trứng vào đảo nhanh.",
+      "Cho cơm, cà rốt và đậu Hà Lan vào chảo.",
+      "Nêm nước mắm, tiêu và đảo đến khi cơm săn.",
+      "Thêm hành lá rồi tắt bếp."
+    ]
+  },
+  {
+    "title": "Canh xương khoai tây cà rốt",
+    "category": "Món canh",
+    "description": "Món canh cho bữa cơm gia đình",
+    "image_url": "images/Canh xuong khoai tay ca rot.jpg",
+    "cook_time": "45 phút",
+    "video_url": null,
+    "ingredients": [
+      "500g xương heo",
+      "2 củ khoai tây",
+      "2 củ cà rốt",
+      "Hành lá",
+      "Hành tím",
+      "Muối",
+      "Nước mắm",
+      "Tiêu"
+    ],
+    "steps": [
+      "Rửa xương, chần qua nước sôi rồi rửa lại.",
+      "Ninh xương với nước khoảng 25–30 phút.",
+      "Khoai tây và cà rốt gọt vỏ, cắt miếng vừa ăn.",
+      "Cho cà rốt vào trước, sau đó cho khoai tây.",
+      "Nêm gia vị vừa ăn, nấu đến khi rau củ mềm.",
+      "Thêm hành lá và tiêu rồi tắt bếp."
+    ]
+  },
+  {
+    "title": "Bún bò",
+    "category": "Món nước",
+    "description": "Món nước truyền thống Việt Nam",
+    "image_url": "images/Bun bo.jpg",
+    "cook_time": "60 phút",
+    "video_url": null,
+    "ingredients": [
+      "500g bún",
+      "300g thịt bò",
+      "Sả",
+      "Hành tím",
+      "Ớt",
+      "Rau sống",
+      "Nước mắm",
+      "Muối",
+      "Tiêu"
+    ],
+    "steps": [
+      "Thịt bò rửa sạch, thái lát mỏng.",
+      "Sả đập dập, hành tím băm nhỏ.",
+      "Phi thơm hành và sả, thêm nước rồi đun sôi.",
+      "Nêm nước mắm, muối và tiêu.",
+      "Trụng bún, xếp thịt bò vào tô.",
+      "Chan nước dùng nóng, thêm rau sống và ớt."
+    ]
+  }
+,
+  {
+    "title": "Phở bò",
+    "category": "Món nước",
+    "description": "Món nước truyền thống Việt Nam",
+    "image_url": "images/Pho bo.jpg",
+    "cook_time": null,
+    "video_url": null,
+    "ingredients": [],
+    "steps": []
+  },
+  {
+    "title": "Bò nướng tảng",
+    "category": "Món nướng",
+    "description": "Món nướng truyền thống Việt Nam",
+    "image_url": "images/Bo nuong tang.jpg",
+    "cook_time": null,
+    "video_url": null,
+    "ingredients": [],
+    "steps": []
+  },
+  {
+    "title": "Gà chiên nước mắm",
+    "category": "Món chiên",
+    "description": "Gà chiên giòn thơm ngon",
+    "image_url": "images/Ga chien nuoc mam.jpg",
+    "cook_time": null,
+    "video_url": null,
+    "ingredients": [],
+    "steps": []
+  },
+  {
+    "title": "Canh chua cá lóc",
+    "category": "Món canh",
+    "description": "Món canh cho bữa cơm gia đình",
+    "image_url": "images/Canh chua ca loc.jpg",
+    "cook_time": null,
+    "video_url": null,
+    "ingredients": [],
+    "steps": []
+  },
+  {
+    "title": "Sườn xào chua ngọt",
+    "category": "Món xào",
+    "description": "Món ngon, đậm đà, thích hợp cho bữa cơm gia đình",
+    "image_url": "images/Suon xao chua ngot.jpg",
+    "cook_time": null,
+    "video_url": null,
+    "ingredients": [],
+    "steps": []
+  },
+  {
+    "title": "Gà nướng mật ong",
+    "category": "Món nướng",
+    "description": "Món nướng truyền thống Việt Nam",
+    "image_url": "images/Ga nuong mat ong.jpg",
+    "cook_time": null,
+    "video_url": null,
+    "ingredients": [],
+    "steps": []
+  },
+  {
+    "title": "Bún măng vịt",
+    "category": "Món nước",
+    "description": "Món nước truyền thống Việt Nam",
+    "image_url": "images/Bun mang vit.jpg",
+    "cook_time": null,
+    "video_url": null,
+    "ingredients": [],
+    "steps": []
+  },
+  {
+    "title": "Hủ tiếu xương",
+    "category": "Món nước",
+    "description": "Món nước truyền thống Việt Nam",
+    "image_url": "images/Hu tieu xuong.jpg",
+    "cook_time": null,
+    "video_url": null,
+    "ingredients": [],
+    "steps": []
+  },
+  {
+    "title": "Đậu hũ chiên xả ớt",
+    "category": "Món chiên",
+    "description": "Món ăn vặt ngon lành",
+    "image_url": "images/Dau hu chien xa ot.jpg",
+    "cook_time": null,
+    "video_url": null,
+    "ingredients": [],
+    "steps": []
+  },
+  {
+    "title": "Cơm gà xối mỡ",
+    "category": "Món chiên",
+    "description": "Cơm gà xối mỡ ngon lành",
+    "image_url": "images/Com ga xoi mo.jpg",
+    "cook_time": null,
+    "video_url": null,
+    "ingredients": [],
+    "steps": []
+  },
+  {
+    "title": "Canh thịt băm nấu cái ngọt",
+    "category": "Món canh",
+    "description": "Món canh cho bữa cơm gia đình",
+    "image_url": "images/Canh thit bam nau cai ngot.jpg",
+    "cook_time": null,
+    "video_url": null,
+    "ingredients": [],
+    "steps": []
+  },
+  {
+    "title": "Mì quảng",
+    "category": "Món nước",
+    "description": "Món nước truyền thống Việt Nam",
+    "image_url": "images/Mi quang.jpg",
+    "cook_time": null,
+    "video_url": null,
+    "ingredients": [],
+    "steps": []
+  },
+  {
+    "title": "Nem rán",
+    "category": "Món chiên",
+    "description": "Món ăn vặt ngon lành",
+    "image_url": "images/Nem ran.jpg",
+    "cook_time": null,
+    "video_url": null,
+    "ingredients": [],
+    "steps": []
+  },
+  {
+    "title": "Phở gà",
+    "category": "Món nước",
+    "description": "Món nước truyền thống Việt Nam",
+    "image_url": "images/Pho ga.jpg",
+    "cook_time": null,
+    "video_url": null,
+    "ingredients": [],
+    "steps": []
+  },
+  {
+    "title": "Canh bầu nấu tôm",
+    "category": "Món canh",
+    "description": "Món canh cho bữa cơm gia đình",
+    "image_url": "images/Canh bau nau tom.jpg",
+    "cook_time": null,
+    "video_url": null,
+    "ingredients": [],
+    "steps": []
+  },
+  {
+    "title": "Bún đậu mắm tôm",
+    "category": "Món khô",
+    "description": "Món khô truyền thống Việt Nam",
+    "image_url": "images/Bun dau mam tom.jpg",
+    "cook_time": null,
+    "video_url": null,
+    "ingredients": [],
+    "steps": []
+  },
+  {
+    "title": "Bún mọc",
+    "category": "Món nước",
+    "description": "Món nước truyền thống Việt Nam",
+    "image_url": "images/Bun moc.jpg",
+    "cook_time": null,
+    "video_url": null,
+    "ingredients": [],
+    "steps": []
+  },
+  {
+    "title": "Trứng chiên thịt băm",
+    "category": "Món chiên",
+    "description": "Món trứng chiên thịt ngon lành",
+    "image_url": "images/Trung chien thit bam.jpg",
+    "cook_time": null,
+    "video_url": null,
+    "ingredients": [],
+    "steps": []
+  },
+  {
+    "title": "Bún mắm",
+    "category": "Món nước",
+    "description": "Món nước truyền thống Việt Nam",
+    "image_url": "images/Bun mam.jpg",
+    "cook_time": null,
+    "video_url": null,
+    "ingredients": [],
+    "steps": []
+  },
+  {
+    "title": "Bánh canh cua",
+    "category": "Món nước",
+    "description": "Món nước truyền thống Việt Nam",
+    "image_url": "images/Banh canh cua.jpg",
+    "cook_time": null,
+    "video_url": null,
+    "ingredients": [],
+    "steps": []
+  },
+  {
+    "title": "Thịt ba rọi chiên giòn",
+    "category": "Món chiên",
+    "description": "Món thịt chiên giòn ngon lành",
+    "image_url": "images/Thit ba roi chien gion.jpg",
+    "cook_time": null,
+    "video_url": null,
+    "ingredients": [],
+    "steps": []
+  },
+  {
+    "title": "Bún thịt nướng",
+    "category": "Món khô",
+    "description": "Món khô truyền thống Việt Nam",
+    "image_url": "images/Bun thit nuong.jpg",
+    "cook_time": null,
+    "video_url": null,
+    "ingredients": [],
+    "steps": []
+  },
+  {
+    "title": "Bún riêu cua",
+    "category": "Món nước",
+    "description": "Món nước truyền thống Việt Nam",
+    "image_url": "images/Bun rieu cua.jpg",
+    "cook_time": null,
+    "video_url": null,
+    "ingredients": [],
+    "steps": []
+  },
+  {
+    "title": "Canh khổ qua nhồi thịt",
+    "category": "Món canh",
+    "description": "Món canh cho bữa cơm gia đình",
+    "image_url": "images/Canh kho qua nhoi thit.jpg",
+    "cook_time": null,
+    "video_url": null,
+    "ingredients": [],
+    "steps": []
+  }
+]

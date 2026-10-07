@@ -78,9 +78,9 @@ function hienThiCongThuc(recipe) {
     document.getElementById("chiTietThoiGian").textContent =
         recipe.cook_time || "Chưa cập nhật";
     document.getElementById("chiTietKhauPhan").textContent =
-        recipe.servings || "2–4 người";
+        recipe.servings || "Chưa cập nhật";
     document.getElementById("chiTietDoKho").textContent =
-        recipe.difficulty || "Dễ";
+        recipe.difficulty || "Chưa cập nhật";
 
     hienThiNutQuanLyCongThuc(recipe);
 
@@ -98,7 +98,11 @@ function hienThiCongThuc(recipe) {
 
         danhSachNguyenLieu.appendChild(li);
     });
-
+    if (!recipe.ingredients?.length) {
+    const li = document.createElement("li");
+    li.textContent = "Chưa cập nhật nguyên liệu.";
+    danhSachNguyenLieu.appendChild(li);
+}
     const danhSachCachLam = document.getElementById("chiTietCachLam");
     danhSachCachLam.innerHTML = "";
 
@@ -107,7 +111,11 @@ function hienThiCongThuc(recipe) {
         li.textContent = typeof item === "string" ? item : item.content;
         danhSachCachLam.appendChild(li);
     });
-
+    if (!recipe.steps?.length) {
+    const li = document.createElement("li");
+    li.textContent = "Chưa cập nhật cách làm.";
+    danhSachCachLam.appendChild(li);
+}
     const khungVideo = document.getElementById("khungVideo");
 
     khungVideo.replaceChildren();

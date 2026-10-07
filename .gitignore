@@ -2,3 +2,8 @@ backend/.venv/
 backend/__pycache__/
 backend/*.db
 *.pyc
+# Database SQLite và bản sao lưu
+*.db
+*.db-*
+*.db.bak
+*.db.db
