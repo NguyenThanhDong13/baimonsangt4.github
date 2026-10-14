@@ -14,17 +14,40 @@ const danhMucMap = {
 };
 
 async function taiCongThucTuAPI() {
+    let response;
+
     try {
-        const response = await fetch(`${API_URL}/api/recipes/${recipeId}`);
+        response = await fetch(
+            `${API_URL}/api/recipes/${recipeId}`
+        );
+    } catch {
+        hienThiThongBaoLoi(
+            "Không thể kết nối máy chủ. Vui lòng thử lại sau."
+        );
+        return;
+    }
 
-        if (!response.ok) {
-            throw new Error("Không tìm thấy công thức");
-        }
+    if (response.status === 404) {
+        hienThiThongBaoLoi(
+            "Công thức không tồn tại hoặc đã bị xóa."
+        );
+        return;
+    }
 
+    if (!response.ok) {
+        hienThiThongBaoLoi(
+            "Máy chủ không thể tải công thức. Vui lòng thử lại sau."
+        );
+        return;
+    }
+
+    try {
         const recipe = await response.json();
         hienThiCongThuc(recipe);
-    } catch (error) {
-        hienThiThongBaoLoi("Không thể lấy dữ liệu từ API. Hãy kiểm tra API đang chạy.");
+    } catch {
+        hienThiThongBaoLoi(
+            "Không thể hiển thị dữ liệu công thức."
+        );
     }
 }
 

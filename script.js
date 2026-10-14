@@ -90,7 +90,7 @@ function updateAuthUI() {
                 updateAuthUI();
                 window.location.href = "index.html";
             }
-        }, { once: true });
+                });
     } else {
         authLink.textContent = "Đăng nhập";
         authLink.href = "dang-nhap.html";
@@ -376,6 +376,10 @@ async function renderSavedRecipes() {
                 try {
                     await apiRequest(`/api/recipes/${recipeId}`, { method: "DELETE" });
                     card.remove();
+                    const inputTimKiem = document.getElementById("tuKhoa");
+                if (inputTimKiem) {
+                inputTimKiem.dispatchEvent(new Event("input"));
+}
                 } catch (error) {
                     alert(error.message);
                 }
@@ -435,7 +439,8 @@ function khoiTaoTimKiem() {
     };
 
     // Lấy toàn bộ món ăn có sẵn trong trang.
-    const cacMon = Array.from(
+    function layDanhSachMon() {
+    return Array.from(
         danhSach.querySelectorAll(".mon-card")
     ).map(function (theMon) {
         return {
@@ -444,8 +449,9 @@ function khoiTaoTimKiem() {
             danhMuc: theMon.querySelector("span").textContent.trim()
         };
     });
-
-    function locMonAn() {
+}
+     function locMonAn() {
+        const cacMon = layDanhSachMon();
         const tuKhoa = chuanHoa(input.value);
         const cacTu = tuKhoa.split(" ").filter(Boolean);
         const danhMucDangChon = select.value;
@@ -562,4 +568,4 @@ if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", initApp);
 } else {
     initApp();
-}
+} 
