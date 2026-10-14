@@ -15,6 +15,7 @@ from sqlalchemy.orm import Session as DatabaseSession
 from database import Base, engine, SessionLocal
 from models import (
     Category,
+    Comment,
     CookingStep,
     Favorite,
     Ingredient,
@@ -729,4 +730,113 @@ def bo_mon_yeu_thich(
             Favorite.recipe_id == recipe_id
         )
     )
+    db.commit()
+    # ---------- Bình luận ----------
+
+class CommentInput(BaseModel):
+    content: str = Field(min_length=1, max_length=1000)
+
+    @field_validator("content")
+    @classmethod
+    def normalize_content(cls, value: str) -> str:
+        value = value.strip()
+
+        if not value:
+            raise ValueError(
+                "Nội dung bình luận không được để trống"
+            )
+
+        return value
+
+
+def comment_json(comment):
+    return {
+        "id": comment.id,
+        "recipe_id": comment.recipe_id,
+        "user_id": comment.user_id,
+        "username": comment.user.username,
+        "content": comment.content,
+        "created_at": comment.created_at.isoformat()
+    }
+
+
+@app.get("/api/recipes/{recipe_id}/comments")
+def lay_binh_luan(
+    recipe_id: int,
+    db: DatabaseSession = Depends(get_db)
+):
+    if db.get(Recipe, recipe_id) is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Không tìm thấy công thức"
+        )
+
+    comments = db.scalars(
+        select(Comment)
+        .where(Comment.recipe_id == recipe_id)
+        .order_by(
+            Comment.created_at.desc(),
+            Comment.id.desc()
+        )
+    ).all()
+
+    return [
+        comment_json(comment)
+        for comment in comments
+    ]
+
+
+@app.post(
+    "/api/recipes/{recipe_id}/comments",
+    status_code=status.HTTP_201_CREATED
+)
+def gui_binh_luan(
+    recipe_id: int,
+    payload: CommentInput,
+    user: User = Depends(get_current_user),
+    db: DatabaseSession = Depends(get_db)
+):
+    if db.get(Recipe, recipe_id) is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Không tìm thấy công thức"
+        )
+
+    comment = Comment(
+        recipe_id=recipe_id,
+        user=user,
+        content=payload.content
+    )
+
+    db.add(comment)
+    db.commit()
+    db.refresh(comment)
+
+    return comment_json(comment)
+
+
+@app.delete(
+    "/api/comments/{comment_id}",
+    status_code=status.HTTP_204_NO_CONTENT
+)
+def xoa_binh_luan(
+    comment_id: int,
+    user: User = Depends(get_current_user),
+    db: DatabaseSession = Depends(get_db)
+):
+    comment = db.get(Comment, comment_id)
+
+    if comment is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Không tìm thấy bình luận"
+        )
+
+    if comment.user_id != user.id:
+        raise HTTPException(
+            status_code=403,
+            detail="Bạn không có quyền xóa bình luận này"
+        )
+
+    db.delete(comment)
     db.commit()

@@ -2,7 +2,14 @@ from __future__ import annotations
 
 from datetime import datetime
 
-from sqlalchemy import DateTime, ForeignKey, Integer, String, Text
+from sqlalchemy import (
+    CheckConstraint,
+    DateTime,
+    ForeignKey,
+    Integer,
+    String,
+    Text
+)
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from database import Base
@@ -30,6 +37,10 @@ class User(Base):
         cascade="all, delete-orphan"
     )
     favorites: Mapped[list[Favorite]] = relationship(
+        back_populates="user",
+        cascade="all, delete-orphan"
+    )
+    comments: Mapped[list[Comment]] = relationship(
         back_populates="user",
         cascade="all, delete-orphan"
     )
@@ -124,6 +135,10 @@ class Recipe(Base):
         back_populates="recipe",
         cascade="all, delete-orphan"
     )
+    comments: Mapped[list[Comment]] = relationship(
+        back_populates="recipe",
+        cascade="all, delete-orphan"
+    )
 
 
 class Ingredient(Base):
@@ -183,7 +198,6 @@ class CookingStep(Base):
 class Favorite(Base):
     __tablename__ = "favorites"
 
-    # Khóa chính ghép: một người không lưu trùng cùng một món.
     user_id: Mapped[int] = mapped_column(
         ForeignKey("users.id"),
         primary_key=True
@@ -203,4 +217,42 @@ class Favorite(Base):
     )
     recipe: Mapped[Recipe] = relationship(
         back_populates="favorites"
+    )
+
+
+class Comment(Base):
+    __tablename__ = "comments"
+
+    __table_args__ = (
+        CheckConstraint(
+            "length(content) BETWEEN 1 AND 1000 "
+            "AND length(trim(content)) > 0",
+            name="ck_comments_content"
+        ),
+    )
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    user_id: Mapped[int] = mapped_column(
+        ForeignKey("users.id"),
+        nullable=False
+    )
+    recipe_id: Mapped[int] = mapped_column(
+        ForeignKey("recipes.id"),
+        nullable=False
+    )
+    content: Mapped[str] = mapped_column(
+        Text,
+        nullable=False
+    )
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime,
+        default=datetime.now,
+        nullable=False
+    )
+
+    user: Mapped[User] = relationship(
+        back_populates="comments"
+    )
+    recipe: Mapped[Recipe] = relationship(
+        back_populates="comments"
     )

@@ -5,6 +5,65 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chi tiết món ăn</title>
     <link rel="stylesheet" href="style.css">
+
+    <style>
+        #commentContent {
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            min-height: 100px;
+            margin: 12px 0;
+            padding: 12px;
+            border: 1px solid #d8b99c;
+            border-radius: 8px;
+            font: inherit;
+            resize: vertical;
+        }
+
+        #commentForm button,
+        #commentReload,
+        .comment-card button {
+            padding: 10px 16px;
+            border: 0;
+            border-radius: 8px;
+            background: #a94708;
+            color: white;
+            cursor: pointer;
+        }
+
+        #commentForm button:disabled,
+        #commentReload:disabled,
+        .comment-card button:disabled {
+            opacity: 0.6;
+            cursor: wait;
+        }
+
+        #commentMessage {
+            margin: 12px 0;
+        }
+
+        .comment-card {
+            padding: 16px 0;
+            border-bottom: 1px solid #ead8c5;
+        }
+
+        .comment-card small {
+            display: block;
+            margin-top: 6px;
+            color: #65513f;
+        }
+
+        .comment-text {
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            margin: 12px 0;
+        }
+
+        #commentLogin[hidden],
+        #commentReload[hidden] {
+            display: none;
+        }
+    </style>
 </head>
 
 <body>
@@ -15,13 +74,17 @@
             <a href="index.html">Trang chủ</a>
             <a href="mon-an.html">Món ăn</a>
             <a href="yeu-thich.html">Yêu thích</a>
-            <a href="dang-cong-thuc.html" class="recipe-link">Đăng công thức</a>
+            <a href="dang-cong-thuc.html" class="recipe-link">
+                Đăng công thức
+            </a>
             <a href="dang-nhap.html" class="auth-link">Đăng nhập</a>
         </nav>
     </header>
 
     <main class="chi-tiet-mon">
-        <a class="nut-quay-lai" href="mon-an.html">← Quay lại danh sách món</a>
+        <a class="nut-quay-lai" href="mon-an.html">
+            ← Quay lại danh sách món
+        </a>
 
         <section class="chi-tiet-dau-trang">
             <div class="chi-tiet-anh">
@@ -38,15 +101,13 @@
                         <strong>⏱ Thời gian</strong>
                         <span id="chiTietThoiGian"></span>
                     </div>
-
                     <div>
                         <strong>🍽 Khẩu phần</strong>
-                        <span id="chiTietKhauPhan">2–4 người</span>
+                        <span id="chiTietKhauPhan">Chưa cập nhật</span>
                     </div>
-
                     <div>
                         <strong>⭐ Độ khó</strong>
-                        <span id="chiTietDoKho">Dễ</span>
+                        <span id="chiTietDoKho">Chưa cập nhật</span>
                     </div>
                 </div>
 
@@ -54,9 +115,21 @@
                     ♡ Lưu công thức
                 </button>
 
-                <div id="recipeOwnerActions" class="recipe-owner-actions" hidden>
-                    <a id="editRecipeLink" class="nut-sua-cong-thuc">Sửa công thức</a>
-                    <button id="deleteRecipeButton" class="nut-xoa-cong-thuc" type="button">Xóa công thức</button>
+                <div
+                    id="recipeOwnerActions"
+                    class="recipe-owner-actions"
+                    hidden
+                >
+                    <a id="editRecipeLink" class="nut-sua-cong-thuc">
+                        Sửa công thức
+                    </a>
+                    <button
+                        id="deleteRecipeButton"
+                        class="nut-xoa-cong-thuc"
+                        type="button"
+                    >
+                        Xóa công thức
+                    </button>
                 </div>
             </aside>
         </section>
@@ -76,11 +149,39 @@
                 <h2>🎥 Video hướng dẫn</h2>
                 <div id="khungVideo"></div>
             </div>
+
             <div class="khoi-noi-dung">
                 <h2>💬 Bình luận</h2>
-                <p class="video-chua-co">
-                    Phần bình luận sẽ được thêm sau.
-                </p>
+
+                <a id="commentLogin" href="dang-nhap.html" hidden>
+                    Đăng nhập để gửi bình luận
+                </a>
+
+                <form id="commentForm">
+                    <label for="commentContent">Ý kiến của bạn</label>
+                    <textarea
+                        id="commentContent"
+                        maxlength="1000"
+                        required
+                        disabled
+                        placeholder="Nhập bình luận, tối đa 1.000 ký tự..."
+                    ></textarea>
+                    <button id="commentSubmit" type="submit" disabled>
+                        Gửi bình luận
+                    </button>
+                </form>
+
+                <p
+                    id="commentMessage"
+                    role="status"
+                    aria-live="polite"
+                ></p>
+
+                <button id="commentReload" type="button">
+                    Tải lại bình luận
+                </button>
+
+                <div id="commentList"></div>
             </div>
         </section>
     </main>
@@ -89,5 +190,6 @@
     <script src="script.js"></script>
     <script src="cong-thuc.js"></script>
     <script src="chi-tiet.js"></script>
+    <script src="binh-luan.js"></script>
 </body>
 </html>
