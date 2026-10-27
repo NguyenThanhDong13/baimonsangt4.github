@@ -17,7 +17,13 @@ from database import Base
 
 class User(Base):
     __tablename__ = "users"
-
+    
+    role: Mapped[str] = mapped_column(
+        String(20),
+        nullable=False,
+        default="user",
+        server_default="user"
+    )
     id: Mapped[int] = mapped_column(primary_key=True)
     username: Mapped[str] = mapped_column(
         String(50), unique=True, nullable=False

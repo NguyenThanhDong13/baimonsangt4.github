@@ -211,8 +211,33 @@ def get_current_user(
         )
 
     return session.user
+def require_admin(
+    user: User = Depends(get_current_user)
+) -> User:
+    if user.role != "admin":
+        raise HTTPException(
+            status_code=403,
+            detail="Bạn không có quyền quản trị"
+        )
 
+    return user
+@app.get("/api/admin/users")
+def list_users(
+    admin: User = Depends(require_admin),
+    db: DatabaseSession = Depends(get_db)
+):
+    users = db.scalars(
+        select(User).order_by(User.id)
+    ).all()
 
+    return [
+        {
+            "id": user.id,
+            "username": user.username,
+            "role": user.role
+        }
+        for user in users
+    ]
 def seed_categories() -> None:
     db = SessionLocal()
     try:
@@ -332,7 +357,8 @@ def thong_tin_tai_khoan(
 ):
     return {
         "id": user.id,
-        "username": user.username
+        "username": user.username,
+        "role": user.role
     }
 
 
@@ -587,7 +613,7 @@ def cap_nhat_cong_thuc(
             detail="Không tìm thấy công thức"
         )
 
-    if recipe.author_id != user.id:
+    if recipe.author_id != user.id and user.role != "admin":
         raise HTTPException(
             status_code=403,
             detail="Bạn không có quyền sửa công thức này"
@@ -647,7 +673,7 @@ def xoa_cong_thuc(
             detail="Không tìm thấy công thức"
         )
 
-    if recipe.author_id != user.id:
+    if recipe.author_id != user.id and user.role != "admin":
         raise HTTPException(
             status_code=403,
             detail="Bạn không có quyền xóa công thức này"
@@ -832,7 +858,7 @@ def xoa_binh_luan(
             detail="Không tìm thấy bình luận"
         )
 
-    if comment.user_id != user.id:
+    if comment.user_id != user.id and user.role != "admin":
         raise HTTPException(
             status_code=403,
             detail="Bạn không có quyền xóa bình luận này"
