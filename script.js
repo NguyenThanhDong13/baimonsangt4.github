@@ -186,9 +186,15 @@ async function setupRecipeForm() {
     const formTitle = document.getElementById("recipeFormTitle");
     const submitButton = form.querySelector('button[type="submit"]');
     const recipeId = new URLSearchParams(window.location.search).get("id");
-    const currentUser = localStorage.getItem("authToken")
-        ? getCurrentUser()
-        : null;
+    let currentUser = null;
+
+if (localStorage.getItem("authToken")) {
+    try {
+        currentUser = await apiRequest("/api/auth/me");
+    } catch {
+        // Phần kiểm tra bên dưới sẽ khóa form nếu phiên không hợp lệ.
+    }
+}
     const setFormEnabled = enabled => {
         form.querySelectorAll("input, textarea, select, button").forEach(el => {
             el.disabled = !enabled;
@@ -209,7 +215,10 @@ async function setupRecipeForm() {
 
         try {
             const recipe = await apiRequest(`/api/recipes/${recipeId}`);
-            if (recipe.author !== currentUser.username) {
+            if (
+    recipe.author !== currentUser.username &&
+    currentUser.role !== "admin"
+) {
                 throw new Error("Bạn không có quyền sửa công thức này.");
             }
 
@@ -303,6 +312,15 @@ async function setupRecipeForm() {
 }
 
 async function renderSavedRecipes() {
+        let viewer = null;
+
+    if (localStorage.getItem("authToken")) {
+        try {
+            viewer = await apiRequest("/api/auth/me");
+        } catch {
+            // Không hiện nút quản lý nếu chưa xác minh được tài khoản.
+        }
+    }
     const danhSach = document.querySelector(".danh-sach-mon");
     if (!danhSach) return;
 
@@ -356,7 +374,10 @@ async function renderSavedRecipes() {
         });
 
         const currentUser = getCurrentUser();
-        if (currentUser && currentUser.username === recipe.author) {
+        if (
+    viewer &&
+    (viewer.username === recipe.author || viewer.role === "admin")
+) {
             const actions = document.createElement("div");
             actions.className = "recipe-card-actions";
             actions.addEventListener("click", event => event.stopPropagation());
@@ -569,3 +590,24 @@ if (document.readyState === "loading") {
 } else {
     initApp();
 } 
+async function updateAdminMenu() {
+    const links = document.querySelectorAll(".admin-link");
+
+    links.forEach(link => {
+        link.hidden = true;
+    });
+
+    if (!localStorage.getItem("authToken")) return;
+
+    try {
+        const user = await apiRequest("/api/auth/me");
+
+        links.forEach(link => {
+            link.hidden = user.role !== "admin";
+        });
+    } catch {
+        // Giữ mục quản trị ẩn nếu không xác minh được tài khoản.
+    }
+}
+
+updateAdminMenu();

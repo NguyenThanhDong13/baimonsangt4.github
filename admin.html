@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản trị - Hướng dẫn nấu ăn</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="logo">🍳 QUẢN TRỊ</div>
+        <nav>
+            <a href="index.html">Trang chủ</a>
+            <a href="mon-an.html">Món ăn</a>
+            <a href="dang-nhap.html" class="auth-link">Đăng nhập</a>
+        </nav>
+    </header>
+
+    <main style="max-width: 1000px; margin: 30px auto; padding: 20px;">
+        <h1>Quản lý tài khoản</h1>
+
+        <p id="adminMessage" role="status" style="margin: 20px 0;">
+            Đang kiểm tra quyền truy cập...
+        </p>
+
+        <div id="adminContent" hidden style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse;">
+                <caption>Danh sách tài khoản trong hệ thống</caption>
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Tên đăng nhập</th>
+                        <th scope="col">Quyền</th>
+                    </tr>
+                </thead>
+                <tbody id="userTableBody"></tbody>
+            </table>
+        </div>
+    </main>
+
+    <script src="config.js"></script>
+    <script src="script.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>

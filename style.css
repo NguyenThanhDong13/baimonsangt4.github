@@ -722,11 +722,10 @@ footer {
 }
 
 .recipe-card-actions {
-    position: absolute;
-    right: 12px;
-    bottom: 12px;
     display: flex;
+    justify-content: flex-end;
     gap: 8px;
+    padding: 0 12px 14px;
 }
 
 .delete-recipe-btn {
@@ -988,4 +987,16 @@ footer {
     .auth-card h1 {
         font-size: 28px;
     }
+}
+.recipe-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.recipe-card-actions {
+    margin-top: auto;
+}
+
+.recipe-card > span {
+    align-self: center;
 }

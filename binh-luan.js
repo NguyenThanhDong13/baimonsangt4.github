@@ -52,7 +52,10 @@
 
             card.append(author, time, content);
 
-            if (user && user.id === comment.user_id) {
+            if (
+    user &&
+    (user.id === comment.user_id || user.role === "admin")
+) {
                 const remove = document.createElement("button");
                 remove.type = "button";
                 remove.textContent = "Xóa bình luận";
