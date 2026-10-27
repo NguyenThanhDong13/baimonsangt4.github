@@ -210,7 +210,15 @@ def get_current_user(
             headers={"WWW-Authenticate": "Bearer"}
         )
 
-    return session.user
+    user = session.user
+
+    if not user.is_active:
+        raise HTTPException(
+            status_code=403,
+            detail="Tài khoản của bạn đã bị khóa"
+        )
+
+    return user
 def require_admin(
     user: User = Depends(get_current_user)
 ) -> User:
@@ -231,10 +239,11 @@ def list_users(
     ).all()
 
     return [
-        {
+                {
             "id": user.id,
             "username": user.username,
-            "role": user.role
+            "role": user.role,
+            "is_active": user.is_active
         }
         for user in users
     ]
@@ -253,7 +262,55 @@ def seed_categories() -> None:
         db.commit()
     finally:
         db.close()
+class AccountStatusInput(BaseModel):
+    is_active: bool
 
+
+@app.patch("/api/admin/users/{user_id}/status")
+def update_account_status(
+    user_id: int,
+    payload: AccountStatusInput,
+    admin: User = Depends(require_admin),
+    db: DatabaseSession = Depends(get_db)
+):
+    user = db.get(User, user_id)
+
+    if user is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Không tìm thấy tài khoản"
+        )
+
+    if user.id == admin.id:
+        raise HTTPException(
+            status_code=403,
+            detail="Bạn không thể khóa tài khoản của mình"
+        )
+
+    if user.role != "user":
+        raise HTTPException(
+            status_code=403,
+            detail="Chỉ được khóa hoặc mở khóa tài khoản thường"
+        )
+
+    user.is_active = payload.is_active
+
+    if not payload.is_active:
+        db.execute(
+            delete(UserSession).where(
+                UserSession.user_id == user.id
+            )
+        )
+
+    db.commit()
+    db.refresh(user)
+
+    return {
+        "id": user.id,
+        "username": user.username,
+        "role": user.role,
+        "is_active": user.is_active
+    }
 
 seed_categories()
 
@@ -337,7 +394,12 @@ def dang_nhap(
             status_code=401,
             detail="Tên đăng nhập hoặc mật khẩu không đúng"
         )
-
+    if not user.is_active:
+        raise HTTPException(
+            status_code=403,
+            detail="Tài khoản của bạn đã bị khóa"
+        )
+    
     token = issue_session(db, user)
     db.commit()
 
