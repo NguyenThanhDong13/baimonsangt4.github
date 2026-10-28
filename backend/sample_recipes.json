@@ -103,246 +103,629 @@
       "Trụng bún, xếp thịt bò vào tô.",
       "Chan nước dùng nóng, thêm rau sống và ớt."
     ]
-  }
-,
+  },
   {
     "title": "Phở bò",
     "category": "Món nước",
     "description": "Món nước truyền thống Việt Nam",
     "image_url": "images/Pho bo.jpg",
-    "cook_time": null,
+    "cook_time": "60 phút",
     "video_url": null,
-    "ingredients": [],
-    "steps": []
+    "ingredients": [
+      "400g bánh phở tươi",
+      "600g xương bò",
+      "300g thịt bò tái",
+      "2 củ hành tây",
+      "5g gừng",
+      "1 thanh quế",
+      "2 củ hồi",
+      "1 muỗng nước mắm",
+      "Muối"
+    ],
+    "steps": [
+      "Xương bò chần sạch, ninh cùng gừng và hành nướng khoảng 60 phút.",
+      "Rang quế, hồi, thơm gia vị rồi cho vào nước dùng; nêm nước mắm và muối.",
+      "Thái mỏng thịt bò, trụng bánh phở vừa mềm.",
+      "Xếp bánh phở và thịt bò vào tô, chan nước dùng nóng.",
+      "Ăn kèm hành, rau thơm, chanh và ớt."
+    ]
   },
   {
     "title": "Bò nướng tảng",
     "category": "Món nướng",
     "description": "Món nướng truyền thống Việt Nam",
     "image_url": "images/Bo nuong tang.jpg",
-    "cook_time": null,
+    "cook_time": "40 phút",
     "video_url": null,
-    "ingredients": [],
-    "steps": []
+    "ingredients": [
+      "600g thăn bò",
+      "2 muỗng dầu hào",
+      "1 muỗng nước mắm",
+      "1 muỗng dầu ăn",
+      "3 tép tỏi",
+      "1 muỗng đường",
+      "Hạt tiêu",
+      "Bơ",
+      "Rau sống"
+    ],
+    "steps": [
+      "Thăn bò để ráo, thấm đều hỗn hợp dầu hào, nước mắm, tỏi, đường và tiêu.",
+      "Ướp lạnh ít nhất 30 phút.",
+      "Đun nóng chảo gang, phết mỏng bơ hoặc dầu ăn.",
+      "Áp chảo bò đến độ chín theo ý rồi để nghỉ 5 phút, thái lát.",
+      "Ăn cùng muối tiêu chanh và rau sống."
+    ]
   },
   {
     "title": "Gà chiên nước mắm",
     "category": "Món chiên",
     "description": "Gà chiên giòn thơm ngon",
     "image_url": "images/Ga chien nuoc mam.jpg",
-    "cook_time": null,
+    "cook_time": "45 phút",
     "video_url": null,
-    "ingredients": [],
-    "steps": []
+    "ingredients": [
+      "700g đùi gà tách xương",
+      "2 muỗng nước mắm",
+      "1 muỗng nước đường",
+      "3 tép tỏi",
+      "1 củ ớt đỏ",
+      "1 muỗng bột năng",
+      "Dầu ăn",
+      "Hành lá",
+      "Tiêu"
+    ],
+    "steps": [
+      "Đùi gà ướp nước mắm, tiêu và bột năng khoảng 15 phút.",
+      "Chiên gà trong dầu nóng đến vàng giòn rồi vớt ráo.",
+      "Phi tỏi, ớt; cho nước mắm, đường và ít nước vào làm nước sốt.",
+      "Cho gà vào đảo đều cho thấm sốt không bị ướt lại.",
+      "Rắc hành lá và dùng nóng."
+    ]
   },
   {
     "title": "Canh chua cá lóc",
     "category": "Món canh",
     "description": "Món canh cho bữa cơm gia đình",
     "image_url": "images/Canh chua ca loc.jpg",
-    "cook_time": null,
+    "cook_time": "35 phút",
     "video_url": null,
-    "ingredients": [],
-    "steps": []
+    "ingredients": [
+      "500g cá lóc",
+      "2 quả cà chua",
+      "100g thơm",
+      "100g đậu bắp",
+      "100g giá đỗ",
+      "2 muỗng nước me",
+      "2 muỗng nước mắm",
+      "Hành lá",
+      "Ngò om"
+    ],
+    "steps": [
+      "Cá lóc làm sạch, chặt khúc, sơ qua muối và nước cốt chanh.",
+      "Đun sôi nước; cho cà chua, thơm và nước me vào nấu chua.",
+      "Cho cá vào nấu vừa chín để không bị nát.",
+      "Cho đậu bắp, giá đỗ vào, nêm nước mắm, đường và muối vừa ăn.",
+      "Tắt bếp, thêm ngò om và hành lá."
+    ]
   },
   {
     "title": "Sườn xào chua ngọt",
     "category": "Món xào",
     "description": "Món ngon, đậm đà, thích hợp cho bữa cơm gia đình",
     "image_url": "images/Suon xao chua ngot.jpg",
-    "cook_time": null,
+    "cook_time": "50 phút",
     "video_url": null,
-    "ingredients": [],
-    "steps": []
+    "ingredients": [
+      "600g sườn heo",
+      "1 quả dứa",
+      "2 quả cà chua",
+      "1 củ hành tây",
+      "3 muỗng tương cà",
+      "2 muỗng giấm",
+      "2 muỗng đường",
+      "2 muỗng nước mắm",
+      "Dầu ăn"
+    ],
+    "steps": [
+      "Sườn chặt miếng, chần sơ rồi rửa sạch.",
+      "Ướp sườn ít muối; chiên vàng hoặc áp chảo rồi vớt ra.",
+      "Phi hành, cho cà chua và thơm vào xào mềm.",
+      "Nêm tương cà, giấm, đường, nước mắm rồi đổ sườn vào rim.",
+      "Cho hành tây, đảo vài lượt và tắt bếp."
+    ]
   },
   {
     "title": "Gà nướng mật ong",
     "category": "Món nướng",
     "description": "Món nướng truyền thống Việt Nam",
     "image_url": "images/Ga nuong mat ong.jpg",
-    "cook_time": null,
+    "cook_time": "55 phút",
     "video_url": null,
-    "ingredients": [],
-    "steps": []
+    "ingredients": [
+      "1 con gà mái tơ (800g)",
+      "2 muỗng mật ong",
+      "1 muỗng nước mắm",
+      "1 muỗng dầu hào",
+      "4 tép tỏi",
+      "1 muỗng dầu ăn",
+      "1 muỗng nước tương",
+      "Tiêu",
+      "Sả"
+    ],
+    "steps": [
+      "Gà làm sạch, chặt phần vừa ăn và để ráo.",
+      "Ướp gà với nước mắm, dầu hào, mật ong, sả, tỏi và tiêu 30 phút.",
+      "Phết thêm chút mật ong lên da gà.",
+      "Nướng ở 190°C khoảng 40–45 phút, lật đều giữa chừng.",
+      "Nướng đến vàng, thơm và chín tới."
+    ]
   },
   {
     "title": "Bún măng vịt",
     "category": "Món nước",
     "description": "Món nước truyền thống Việt Nam",
     "image_url": "images/Bun mang vit.jpg",
-    "cook_time": null,
+    "cook_time": "100 phút",
     "video_url": null,
-    "ingredients": [],
-    "steps": []
+    "ingredients": [
+      "1 con vịt (1kg)",
+      "300g măng khô",
+      "400g bún tươi",
+      "2 củ hành tây",
+      "3 củ sả",
+      "2 muỗng nước mắm",
+      "Gừng",
+      "Hành phi",
+      "Rau sống"
+    ],
+    "steps": [
+      "Vịt làm sạch, luộc với gừng và hành; để xương làm nước dùng.",
+      "Măng khô ngâm mềm, luộc sạch và xào sơ.",
+      "Ninh xương ít nhất 60 phút; nêm nước mắm cho vừa ăn.",
+      "Cho măng vào nước dùng và nấu mềm; thái thịt vịt.",
+      "Trụng bún, xếp vịt và chan nước dùng, ăn kèm rau."
+    ]
   },
   {
     "title": "Hủ tiếu xương",
     "category": "Món nước",
     "description": "Món nước truyền thống Việt Nam",
     "image_url": "images/Hu tieu xuong.jpg",
-    "cook_time": null,
+    "cook_time": "90 phút",
     "video_url": null,
-    "ingredients": [],
-    "steps": []
+    "ingredients": [
+      "800g xương heo",
+      "400g hủ tiếu khô",
+      "200g thịt bằm",
+      "150g tôm",
+      "2 củ cải trắng",
+      "2 muỗng nước mắm",
+      "Hành phi",
+      "Giá đỗ",
+      "Hành lá"
+    ],
+    "steps": [
+      "Xương heo chần sạch rồi ninh khoảng 60 phút.",
+      "Thịt bằm ướp nước mắm, rán hoặc xào chín.",
+      "Tôm khứa lưng, rang nhẹ cho thơm; trái cải nấu mềm trong nước dùng.",
+      "Trụng hủ tiếu, xếp thịt, tôm và giá đỗ vào tô.",
+      "Chan nước dùng, thêm hành phi, hành lá và tiêu."
+    ]
   },
   {
     "title": "Đậu hũ chiên xả ớt",
     "category": "Món chiên",
     "description": "Món ăn vặt ngon lành",
     "image_url": "images/Dau hu chien xa ot.jpg",
-    "cook_time": null,
+    "cook_time": "25 phút",
     "video_url": null,
-    "ingredients": [],
-    "steps": []
+    "ingredients": [
+      "400g đậu hũ",
+      "2 cây sả",
+      "2 quả ớt",
+      "3 tép tỏi",
+      "1 muỗng nước mắm",
+      "1 muỗng đường",
+      "1 muỗng dầu ăn",
+      "Hành lá",
+      "Tiêu"
+    ],
+    "steps": [
+      "Đậu hũ cắt miếng, thấm khô; sả băm, ớt và tỏi băm nhỏ.",
+      "Chiên đậu hũ vàng giòn rồi để ráo dầu.",
+      "Phi tỏi, sả và ớt cho thơm.",
+      "Cho nước mắm, đường và ít nước vào nấu sánh, cho đậu hũ vào đảo đều.",
+      "Rắc hành lá và tiêu rồi dùng nóng."
+    ]
   },
   {
     "title": "Cơm gà xối mỡ",
     "category": "Món chiên",
     "description": "Cơm gà xối mỡ ngon lành",
     "image_url": "images/Com ga xoi mo.jpg",
-    "cook_time": null,
+    "cook_time": "60 phút",
     "video_url": null,
-    "ingredients": [],
-    "steps": []
+    "ingredients": [
+      "1 con gà (800g)",
+      "500g gạo tẻ",
+      "2 muỗng nước mắm",
+      "3 tép tỏi",
+      "1 củ gừng",
+      "1 muỗng dầu ăn",
+      "Nước tương",
+      "Dưa leo",
+      "Rau thơm"
+    ],
+    "steps": [
+      "Luộc gà chín tới với gừng, hành; để thịt thơm và xương làm nước dùng.",
+      "Vo gạo, xào gạo với chút dầu gà rồi nấu cơm mềm tơi.",
+      "Thái gà vừa miếng và trộn nước tương gừng thái sợi.",
+      "Phi hành tỏi, cho nước sốt lên gà khi ăn.",
+      "Múc cơm, xếp gà cùng dưa leo và rau thơm."
+    ]
   },
   {
     "title": "Canh thịt băm nấu cái ngọt",
     "category": "Món canh",
     "description": "Món canh cho bữa cơm gia đình",
     "image_url": "images/Canh thit bam nau cai ngot.jpg",
-    "cook_time": null,
+    "cook_time": "30 phút",
     "video_url": null,
-    "ingredients": [],
-    "steps": []
+    "ingredients": [
+      "200g thịt băm",
+      "200g cải ngọt",
+      "1 quả trứng",
+      "1 muỗng nước mắm",
+      "1/2 muỗng hạt nêm",
+      "Hành lá",
+      "1 tép tỏi",
+      "Tiêu",
+      "Dầu ăn"
+    ],
+    "steps": [
+      "Cải ngọt rửa sạch, cắt khúc vừa ăn.",
+      "Phi tỏi, cho thịt băm vào đảo săn.",
+      "Thêm nước, đun sôi rồi nêm nước mắm và hạt nêm.",
+      "Cho cải ngọt vào nấu mềm; đánh trứng nếu thích.",
+      "Nêm lại, tắt bếp và rắc hành lá, tiêu."
+    ]
   },
   {
     "title": "Mì quảng",
     "category": "Món nước",
     "description": "Món nước truyền thống Việt Nam",
     "image_url": "images/Mi quang.jpg",
-    "cook_time": null,
+    "cook_time": "75 phút",
     "video_url": null,
-    "ingredients": [],
-    "steps": []
+    "ingredients": [
+      "500g mì quảng",
+      "300g thịt heo",
+      "300g tôm",
+      "2 quả trứng",
+      "100g đậu phộng",
+      "2 muỗng nước mắm",
+      "1 muỗng tương",
+      "Nghệ tươi",
+      "Rau thơm"
+    ],
+    "steps": [
+      "Ướp thịt heo và tôm với nước mắm, hành và tiêu.",
+      "Phi tỏi, nghệ rồi cho thịt và tôm vào xào chín.",
+      "Thêm ít nước, ninh khoảng 20 phút cho nước dùng đậm.",
+      "Trụng mì, xếp thịt tôm và trứng vào tô.",
+      "Chan ít nước dùng, rắc đậu phộng và ăn kèm rau, bánh tráng."
+    ]
   },
   {
     "title": "Nem rán",
     "category": "Món chiên",
     "description": "Món ăn vặt ngon lành",
     "image_url": "images/Nem ran.jpg",
-    "cook_time": null,
+    "cook_time": "50 phút",
     "video_url": null,
-    "ingredients": [],
-    "steps": []
+    "ingredients": [
+      "500g thịt heo băm",
+      "200g miến",
+      "150g nấm hương",
+      "2 củ cà rốt",
+      "2 quả trứng",
+      "10 lá bánh đa nem",
+      "Dầu ăn",
+      "1 muỗng nước mắm",
+      "Hạt tiêu"
+    ],
+    "steps": [
+      "Miến ngâm mềm; nấm, cà rốt và hành lá băm nhỏ.",
+      "Trộn thịt băm với miến, nấm, trứng, nước mắm và tiêu.",
+      "Cuốn nhân vào bánh đa nem, dán mép bằng trứng.",
+      "Chiên nem trong dầu vừa lửa đến vàng đều.",
+      "Vớt ra để ráo dầu, ăn với nước chấm và rau sống."
+    ]
   },
   {
     "title": "Phở gà",
     "category": "Món nước",
     "description": "Món nước truyền thống Việt Nam",
     "image_url": "images/Pho ga.jpg",
-    "cook_time": null,
+    "cook_time": "75 phút",
     "video_url": null,
-    "ingredients": [],
-    "steps": []
+    "ingredients": [
+      "1 con gà (1kg)",
+      "400g bánh phở",
+      "2 củ hành tây",
+      "5g gừng",
+      "1 thanh quế",
+      "2 củ hồi",
+      "1 muỗng nước mắm",
+      "Hành lá",
+      "Giá đỗ"
+    ],
+    "steps": [
+      "Gà làm sạch, luộc với hành, gừng; lấy thịt xé và để nước dùng trong.",
+      "Rang hành, gừng; rang quế, hồi cho dậy mùi.",
+      "Cho gia vị vào nước dùng, nêm nước mắm và muối.",
+      "Trụng bánh phở, xếp thịt gà vào tô.",
+      "Chan nước dùng nóng, ăn cùng rau thơm và giá đỗ."
+    ]
   },
   {
     "title": "Canh bầu nấu tôm",
     "category": "Món canh",
     "description": "Món canh cho bữa cơm gia đình",
     "image_url": "images/Canh bau nau tom.jpg",
-    "cook_time": null,
+    "cook_time": "25 phút",
     "video_url": null,
-    "ingredients": [],
-    "steps": []
+    "ingredients": [
+      "300g bầu",
+      "200g tôm",
+      "1 muỗng dầu ăn",
+      "1 tép tỏi",
+      "1 muỗng nước mắm",
+      "Hành lá",
+      "Hạt nêm",
+      "Tiêu",
+      "Nước lọc"
+    ],
+    "steps": [
+      "Bầu gọt vỏ, bổ miếng khoảng 1 cm.",
+      "Tôm làm sạch, phi với tỏi và dầu ăn.",
+      "Thêm nước, đun sôi rồi cho bầu vào.",
+      "Nêm nước mắm và hạt nêm, nấu đến khi bầu trong mềm.",
+      "Nêm lại, rắc hành lá và tiêu."
+    ]
   },
   {
     "title": "Bún đậu mắm tôm",
     "category": "Món khô",
     "description": "Món khô truyền thống Việt Nam",
     "image_url": "images/Bun dau mam tom.jpg",
-    "cook_time": null,
+    "cook_time": "35 phút",
     "video_url": null,
-    "ingredients": [],
-    "steps": []
+    "ingredients": [
+      "400g bún tươi",
+      "300g đậu hũ",
+      "200g thịt ba rọi luộc",
+      "1 quả trứng cút",
+      "2 muỗng mắm tôm",
+      "1 quả chanh",
+      "Ớt",
+      "Đường",
+      "Rau thơm"
+    ],
+    "steps": [
+      "Bún tươi trụng qua nước sôi, để ráo.",
+      "Đậu hũ cắt miếng, chiên vàng hai mặt.",
+      "Thịt ba rọi luộc chín rồi thái lát; luộc trứng cút.",
+      "Pha mắm tôm với chanh, đường, ớt và ít nước nóng.",
+      "Xếp đậu, bún, thịt và rau ra dĩa, dùng cùng nước chấm."
+    ]
   },
   {
     "title": "Bún mọc",
     "category": "Món nước",
     "description": "Món nước truyền thống Việt Nam",
     "image_url": "images/Bun moc.jpg",
-    "cook_time": null,
+    "cook_time": "70 phút",
     "video_url": null,
-    "ingredients": [],
-    "steps": []
+    "ingredients": [
+      "400g bún tươi",
+      "300g thịt heo băm",
+      "200g mọc heo",
+      "100g giò sống",
+      "50g nấm hương",
+      "1 củ cà rốt",
+      "2 muỗng nước mắm",
+      "Hành phi",
+      "Rau thơm"
+    ],
+    "steps": [
+      "Thịt heo băm trộn mọc heo, giò sống, nấm và gia vị, vo viên.",
+      "Chần xương hoặc ninh nước dùng khoảng 45 phút.",
+      "Cho viên mọc vào nước dùng nấu chín.",
+      "Cho cà rốt vào nấu mềm, nêm nước mắm vừa ăn.",
+      "Trụng bún vào tô, chan nước dùng, thêm hành phi và rau."
+    ]
   },
   {
     "title": "Trứng chiên thịt băm",
     "category": "Món chiên",
     "description": "Món trứng chiên thịt ngon lành",
     "image_url": "images/Trung chien thit bam.jpg",
-    "cook_time": null,
+    "cook_time": "20 phút",
     "video_url": null,
-    "ingredients": [],
-    "steps": []
+    "ingredients": [
+      "3 quả trứng",
+      "150g thịt heo băm",
+      "2 tép tỏi",
+      "1 muỗng dầu ăn",
+      "1/2 muỗng nước mắm",
+      "Hành lá",
+      "Hạt tiêu",
+      "Hành tím",
+      "Dầu ăn"
+    ],
+    "steps": [
+      "Tỏi băm phi thơm với dầu.",
+      "Cho thịt vào đảo săn, nêm nước mắm và tiêu.",
+      "Đánh trứng cùng hành lá và thịt đã nguội bớt.",
+      "Chảo thêm dầu, đổ trứng vào chiên nhỏ lửa.",
+      "Khi hai mặt vàng và trứng chín thì gắp ra."
+    ]
   },
   {
     "title": "Bún mắm",
     "category": "Món nước",
     "description": "Món nước truyền thống Việt Nam",
     "image_url": "images/Bun mam.jpg",
-    "cook_time": null,
+    "cook_time": "70 phút",
     "video_url": null,
-    "ingredients": [],
-    "steps": []
+    "ingredients": [
+      "400g bún tươi",
+      "300g mắm cá linh hoặc cá sặc",
+      "300g thịt ba rọi",
+      "200g tôm",
+      "100g bắp cải",
+      "150g cà tím",
+      "2 củ sả",
+      "Rau thơm",
+      "Đường"
+    ],
+    "steps": [
+      "Cá làm sạch, ướp chút muối rồi kho hoặc nấu.",
+      "Phi sả, cho nước dùng, thịt ba rọi, cá và tôm vào nấu.",
+      "Pha mắm cá linh, lọc bọt rồi nêm vào nồi vừa miệng.",
+      "Nấu cà tím và bắp cải vừa mềm.",
+      "Trụng bún, chan nước dùng và ăn kèm rau, ớt."
+    ]
   },
   {
     "title": "Bánh canh cua",
     "category": "Món nước",
     "description": "Món nước truyền thống Việt Nam",
     "image_url": "images/Banh canh cua.jpg",
-    "cook_time": null,
+    "cook_time": "75 phút",
     "video_url": null,
-    "ingredients": [],
-    "steps": []
+    "ingredients": [
+      "500g bánh canh",
+      "400g cua đồng hoặc thịt cua",
+      "200g thịt heo",
+      "100g tôm",
+      "2 quả trứng",
+      "2 muỗng nước mắm",
+      "3 tép tỏi",
+      "Hành phi",
+      "Ngò rí"
+    ],
+    "steps": [
+      "Cua tách thịt; rang mai cua lấy màu và lọc lấy nước dùng.",
+      "Phi tỏi, cho thịt cua, tôm và thịt heo vào xào.",
+      "Ninh cua và gia vị, nêm nước mắm vừa ăn.",
+      "Cho bánh canh vào nồi nấu vừa mềm, đánh trứng tạo sốt.",
+      "Múc ra tô, thêm hành phi và ngò rí."
+    ]
   },
   {
     "title": "Thịt ba rọi chiên giòn",
     "category": "Món chiên",
     "description": "Món thịt chiên giòn ngon lành",
     "image_url": "images/Thit ba roi chien gion.jpg",
-    "cook_time": null,
+    "cook_time": "90 phút",
     "video_url": null,
-    "ingredients": [],
-    "steps": []
+    "ingredients": [
+      "700g thịt ba rọi có da",
+      "1 muỗng muối",
+      "1 muỗng giấm",
+      "2 tép tỏi",
+      "1 muỗng nước mắm",
+      "Dầu ăn để chiên ngập",
+      "Tiêu",
+      "Hành lá",
+      "Nước chấm"
+    ],
+    "steps": [
+      "Thịt ba rọi làm sạch, luộc sơ với muối và giấm.",
+      "Chà da thịt với muối, để khô và chấm nước giấm lên da.",
+      "Ướp mặt thịt với tỏi, nước mắm và tiêu, để 30 phút.",
+      "Chiên ngập dầu nhỏ lửa cho da giòn, xong gắp ra để ráo.",
+      "Thái lát và ăn với nước chấm."
+    ]
   },
   {
     "title": "Bún thịt nướng",
     "category": "Món khô",
     "description": "Món khô truyền thống Việt Nam",
     "image_url": "images/Bun thit nuong.jpg",
-    "cook_time": null,
+    "cook_time": "50 phút",
     "video_url": null,
-    "ingredients": [],
-    "steps": []
+    "ingredients": [
+      "400g thịt heo thăn",
+      "400g bún tươi",
+      "2 muỗng nước mắm",
+      "1 muỗng nước tương",
+      "1 muỗng đường",
+      "3 tép tỏi",
+      "2 muỗng dầu ăn",
+      "Đồ chua",
+      "Rau sống"
+    ],
+    "steps": [
+      "Thịt thăn thái lát, ướp nước mắm, đường, tỏi và dầu ăn 30 phút.",
+      "Làm đồ chua bằng củ cải, cà rốt ngâm giấm đường.",
+      "Pha nước mắm chấm với đường, nước, tỏi và ớt.",
+      "Nướng thịt trên than hoặc chảo đến vàng hai mặt.",
+      "Trụng bún, xếp thịt, đồ chua và rau rồi chan nước mắm."
+    ]
   },
   {
     "title": "Bún riêu cua",
     "category": "Món nước",
     "description": "Món nước truyền thống Việt Nam",
     "image_url": "images/Bun rieu cua.jpg",
-    "cook_time": null,
+    "cook_time": "70 phút",
     "video_url": null,
-    "ingredients": [],
-    "steps": []
+    "ingredients": [
+      "400g bún tươi",
+      "300g cua đồng hoặc ghẹ",
+      "3 quả trứng",
+      "3 quả cà chua",
+      "100g đậu phụ",
+      "50g mắm ruốc",
+      "2 muỗng nước mắm",
+      "Rau sống",
+      "Hành phi"
+    ],
+    "steps": [
+      "Cua đồng giã hoặc xay với ít nước, lọc lấy thịt và nước cua.",
+      "Phi hành, cho cà chua vào xào mềm.",
+      "Đổ nước lọc và nước cua vào nấu, bỏ mắm ruốc và vớt bọt.",
+      "Khuấy thịt cua với trứng, đậu phụ, đổ vào nồi tạo riêu.",
+      "Trụng bún, chan riêu, thêm rau sống và hành phi."
+    ]
   },
   {
     "title": "Canh khổ qua nhồi thịt",
     "category": "Món canh",
     "description": "Món canh cho bữa cơm gia đình",
     "image_url": "images/Canh kho qua nhoi thit.jpg",
-    "cook_time": null,
+    "cook_time": "45 phút",
     "video_url": null,
-    "ingredients": [],
-    "steps": []
+    "ingredients": [
+      "3 quả khổ qua",
+      "300g thịt heo băm",
+      "1 cây nấm mèo",
+      "1 muỗng mộc nhĩ băm",
+      "1 muỗng nước mắm",
+      "Hạt tiêu",
+      "2 muỗng bột năng",
+      "Hành lá",
+      "1 lít nước dùng"
+    ],
+    "steps": [
+      "Khổ qua bổ khoanh, múc ruột bỏ đi.",
+      "Thịt băm trộn nấm mèo, mộc nhĩ, nước mắm và tiêu.",
+      "Nhồi hỗn hợp thịt vào từng khoanh khổ qua, giũa chặt.",
+      "Đun sôi nước dùng, nhẹ nhàng cho khổ qua vào ninh 25 phút.",
+      "Nêm lại, rắc hành lá và dùng nóng."
+    ]
   }
 ]

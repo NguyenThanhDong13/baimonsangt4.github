@@ -92,7 +92,100 @@ function taiCongThucCu() {
 
 // ---------- Hiển thị công thức ----------
 
+let congThucDangXem = null;
+let khauPhanCoBan = 4;
+
+function chuyenSo(frac) {
+    if (!frac) return null;
+    if (frac.includes("/")) {
+        const [tu, mau] = frac.split("/").map(Number);
+        return mau ? tu / mau : null;
+    }
+    return Number(String(frac).replace(",", "."));
+}
+
+function dinhDangSo(value) {
+    const lamTron = Math.round(value * 100) / 100;
+    const nguyen = Math.round(lamTron);
+    if (Math.abs(lamTron - nguyen) < 0.01) return String(nguyen);
+    return String(lamTron).replace(".", ",");
+}
+
+function layKhauPhanCoBan(servings) {
+    const match = String(servings || "").match(/\d+(?:[.,]\d+)?/);
+    const parsed = match ? Number(match[0].replace(",", ".")) : 4;
+    return parsed > 0 ? parsed : 4;
+}
+
+function scaleIngredientAmount(amount, ratio) {
+    if (typeof amount !== "string") return amount;
+    const match = amount.trim().match(/^([0-9]+(?:[.,][0-9]+)?(?:\/[0-9]+)?)(.*)$/);
+    if (!match) return amount;
+    const value = chuyenSo(match[1]);
+    return value === null ? amount : `${dinhDangSo(value * ratio)}${match[2]}`;
+}
+
+function hienThiNguyenLieuTheoNguoi(servings) {
+    const list = document.getElementById("chiTietNguyenLieu");
+    if (!list || !congThucDangXem) return;
+    list.replaceChildren();
+
+    const ingredients = congThucDangXem.ingredients || [];
+    const ratio = servings / khauPhanCoBan;
+    ingredients.forEach(function (item) {
+        const li = document.createElement("li");
+        if (typeof item === "string") {
+            li.textContent = scaleIngredientAmount(item, ratio);
+        } else {
+            if (item.amount) {
+                li.textContent = [scaleIngredientAmount(item.amount, ratio), item.name]
+                    .filter(Boolean).join(" ");
+            } else {
+                li.textContent = scaleIngredientAmount(item.name, ratio);
+            }
+        }
+        list.appendChild(li);
+    });
+
+    if (!ingredients.length) {
+        const li = document.createElement("li");
+        li.textContent = "Chưa cập nhật nguyên liệu.";
+        list.appendChild(li);
+    }
+
+    const portionNote = document.getElementById("ghiChuKhauPhan");
+    if (portionNote) {
+        portionNote.textContent = `Nguyên liệu đã được điều chỉnh cho ${servings} người từ công thức gốc ${khauPhanCoBan} người.`;
+    }
+}
+
+function khoiTaoBoChonKhauPhan() {
+    const select = document.getElementById("soNguoiAn");
+    if (!select) return;
+    let saved = Number(localStorage.getItem("familyServing"));
+    if (!saved || saved < 1 || saved > 10) saved = khauPhanCoBan <= 10 ? khauPhanCoBan : 4;
+    select.value = String(saved);
+
+    const update = () => {
+        const count = Math.max(1, Math.min(10, Number(select.value)));
+        localStorage.setItem("familyServing", String(count));
+        document.getElementById("chiTietKhauPhan").textContent = `${count} người`;
+        hienThiNguyenLieuTheoNguoi(count);
+    };
+
+    select.onchange = update;
+    document.getElementById("giamNguoiAn").onclick = () => {
+        select.value = String(Math.max(1, Number(select.value) - 1)); update();
+    };
+    document.getElementById("tangNguoiAn").onclick = () => {
+        select.value = String(Math.min(10, Number(select.value) + 1)); update();
+    };
+    update();
+}
+
 function hienThiCongThuc(recipe) {
+    congThucDangXem = recipe;
+    khauPhanCoBan = layKhauPhanCoBan(recipe.servings);
     const tenMon = recipe.title || "Món ăn";
 
     document.title = `${tenMon} - Hướng Dẫn Nấu Ăn`;
@@ -112,33 +205,12 @@ function hienThiCongThuc(recipe) {
     document.getElementById("chiTietThoiGian").textContent =
         recipe.cook_time || "Chưa cập nhật";
 
-    document.getElementById("chiTietKhauPhan").textContent =
-        recipe.servings || "Chưa cập nhật";
+    khoiTaoBoChonKhauPhan();
 
     document.getElementById("chiTietDoKho").textContent =
         recipe.difficulty || "Chưa cập nhật";
 
     hienThiNutQuanLyCongThuc(recipe);
-
-    const danhSachNguyenLieu =
-        document.getElementById("chiTietNguyenLieu");
-    danhSachNguyenLieu.replaceChildren();
-
-    (recipe.ingredients || []).forEach(function (item) {
-        const li = document.createElement("li");
-
-        li.textContent = typeof item === "string"
-            ? item
-            : [item.amount, item.name].filter(Boolean).join(" ");
-
-        danhSachNguyenLieu.appendChild(li);
-    });
-
-    if (!recipe.ingredients?.length) {
-        const li = document.createElement("li");
-        li.textContent = "Chưa cập nhật nguyên liệu.";
-        danhSachNguyenLieu.appendChild(li);
-    }
 
     const danhSachCachLam =
         document.getElementById("chiTietCachLam");

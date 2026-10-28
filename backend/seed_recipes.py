@@ -1,4 +1,5 @@
 import json
+import re
 import sqlite3
 from datetime import datetime
 from pathlib import Path
@@ -18,6 +19,23 @@ from models import (
 BACKEND = Path(__file__).resolve().parent
 AUTHOR = "__sample_recipes__"
 DISABLED_PASSWORD = "!sample-account-disabled"
+
+
+def tach_nguyen_lieu(text):
+    text = text.strip()
+
+    match = re.match(
+        r"^(\d+(?:[.,]\d+)?(?:/\d+)?"
+        r"(?:\s*(?:kg|ml|g|l|quả|bát|muỗng|cái|tổ|thìa))?)"
+        r"\s+(.+)$",
+        text,
+        re.IGNORECASE
+    )
+
+    if not match:
+        return text, ""
+
+    return match.group(2).strip(), match.group(1).strip()
 
 
 def main(create_backup=True):
@@ -66,8 +84,6 @@ def main(create_backup=True):
     Base.metadata.create_all(engine)
     created = 0
 
-    # Toàn bộ dữ liệu mẫu được ghi trong một giao dịch.
-    # Nếu xảy ra lỗi, giao dịch sẽ được hoàn tác.
     with SessionLocal.begin() as db:
         author = db.scalar(
             select(User).where(User.username == AUTHOR)
@@ -121,7 +137,9 @@ def main(create_backup=True):
             )
             db.add(recipe)
 
-            for name in item["ingredients"]:
+            for raw_name in item["ingredients"]:
+                name, amount = tach_nguyen_lieu(raw_name)
+
                 ingredient = db.scalar(
                     select(Ingredient).where(
                         Ingredient.name == name
@@ -136,7 +154,7 @@ def main(create_backup=True):
                 recipe.ingredient_links.append(
                     RecipeIngredient(
                         ingredient=ingredient,
-                        amount=""
+                        amount=amount
                     )
                 )
 
@@ -151,7 +169,6 @@ def main(create_backup=True):
                 )
             )
 
-            # Giúp các truy vấn tiếp theo thấy dữ liệu vừa thêm.
             db.flush()
             created += 1
 
