@@ -119,6 +119,9 @@ class Recipe(Base):
     difficulty: Mapped[str | None] = mapped_column(
         String(50), nullable=True
     )
+    moderation_status: Mapped[str] = mapped_column(
+        String(20), nullable=False, default="pending"
+    )
     created_at: Mapped[datetime] = mapped_column(
         DateTime, default=datetime.now
     )

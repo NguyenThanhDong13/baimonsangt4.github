@@ -167,6 +167,63 @@ nav a:hover {
 }
 
 /* FOOTER */
+.recipe-moderation-note {
+    margin: 6px 0 18px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: #fff5e6;
+    color: #7a4a00;
+}
+
+.pending-recipe-card {
+    margin: 12px 0;
+    padding: 16px;
+    border: 1px solid #d7b894;
+    border-radius: 10px;
+    background: white;
+}
+
+.pending-recipe-description {
+    color: #555;
+}
+
+.pending-recipe-details {
+    margin: 16px 0;
+    padding: 14px;
+    border-radius: 8px;
+    background: #fff8ef;
+}
+
+.pending-recipe-details h4 {
+    margin: 12px 0 6px;
+}
+
+.pending-recipe-details ul,
+.pending-recipe-details ol {
+    margin: 0;
+    padding-left: 24px;
+}
+
+.pending-recipe-details li {
+    margin: 5px 0;
+}
+
+.moderation-form {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.moderation-form select,
+.moderation-form button {
+    padding: 9px;
+}
+
+.reject-recipe-button {
+    background: #b00020;
+}
+
 footer {
     text-align: center;
     padding: 30px;

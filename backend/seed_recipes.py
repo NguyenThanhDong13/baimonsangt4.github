@@ -133,7 +133,8 @@ def main(create_backup=True):
                 difficulty=item.get("difficulty"),
                 video_url=item.get("video_url"),
                 category=category,
-                author=author
+                author=author,
+                moderation_status="approved"
             )
             db.add(recipe)
 

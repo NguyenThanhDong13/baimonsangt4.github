@@ -223,11 +223,9 @@ if (localStorage.getItem("authToken")) {
             }
 
             document.getElementById("recipeName").value = recipe.title || "";
-            document.getElementById("recipeCategory").value = recipe.category_code || "";
             document.getElementById("recipeDescription").value = recipe.description || "";
             document.getElementById("recipeCookTime").value = recipe.cook_time || "";
             document.getElementById("recipeServings").value = recipe.servings || "";
-            document.getElementById("recipeDifficulty").value = recipe.difficulty || "";
             document.getElementById("recipeIngredients").value = (recipe.ingredients || [])
                 .map(item => typeof item === "string" ? item : [item.amount, item.name].filter(Boolean).join(" "))
                 .join("\n");
@@ -252,7 +250,6 @@ if (localStorage.getItem("authToken")) {
         event.preventDefault();
 
         const recipeName = document.getElementById("recipeName").value.trim();
-        const recipeCategory = document.getElementById("recipeCategory").value;
         const recipeDescription = document.getElementById("recipeDescription").value.trim();
         const recipeIngredients = document.getElementById("recipeIngredients").value
             .split(/\n+/)
@@ -265,7 +262,7 @@ if (localStorage.getItem("authToken")) {
         const recipeImage = document.getElementById("recipeImage").value.trim();
         const recipeVideo = document.getElementById("recipeVideo").value.trim();
 
-        if (!recipeName || !recipeCategory || !recipeDescription || recipeIngredients.length === 0 || recipeSteps.length === 0) {
+        if (!recipeName || !recipeDescription || recipeIngredients.length === 0 || recipeSteps.length === 0) {
             message.textContent = "Vui lòng điền đầy đủ thông tin.";
             message.style.color = "#b00020";
             return;
@@ -279,21 +276,23 @@ if (localStorage.getItem("authToken")) {
                     method: recipeId ? "PUT" : "POST",
                     body: JSON.stringify({
                         title: recipeName,
-                        category: recipeCategory,
+                        category: "kho",
                         description: recipeDescription,
                         image_url: recipeImage || "images/Com chien.jpg",
                         video_url: recipeVideo || null,
                         cook_time: document.getElementById("recipeCookTime").value.trim() || null,
                         servings: document.getElementById("recipeServings").value.trim() || null,
-                        difficulty: document.getElementById("recipeDifficulty").value.trim() || null,
+                        difficulty: null,
                         ingredients: recipeIngredients,
                         steps: recipeSteps
                     })
                 }
             );
             message.textContent = recipeId
-                ? "Cập nhật công thức thành công!"
-                : "Đăng công thức thành công!";
+                ? "Cập nhật công thức thành công và gửi lại chờ duyệt!"
+                : (currentUser.role === "admin"
+                    ? "Đăng công thức thành công!"
+                    : "Đã gửi công thức chờ quản trị viên duyệt.");
             message.style.color = "#2e7d32";
             if (!recipeId) form.reset();
             resultLink.replaceChildren();

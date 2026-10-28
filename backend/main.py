@@ -8,7 +8,7 @@ from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from pydantic import BaseModel, Field, field_validator
-from sqlalchemy import select, delete, inspect
+from sqlalchemy import select, delete, inspect, text
 from sqlalchemy.dialects.sqlite import insert as sqlite_insert
 from sqlalchemy.orm import Session as DatabaseSession
 
@@ -29,6 +29,16 @@ from models import (
 is_new_database = not inspect(engine).has_table("users")
 
 Base.metadata.create_all(bind=engine)
+
+# Cập nhật schema cho cơ sở dữ liệu SQLite đã tồn tại trước khi thêm duyệt công thức.
+if engine.url.get_backend_name() == "sqlite":
+    recipe_columns = {column["name"] for column in inspect(engine).get_columns("recipes")}
+    if "moderation_status" not in recipe_columns:
+        with engine.begin() as connection:
+            connection.execute(text(
+                "ALTER TABLE recipes ADD COLUMN moderation_status VARCHAR(20) "
+                "NOT NULL DEFAULT 'approved'"
+            ))
 
 app = FastAPI(
     title="API Hướng Dẫn Nấu Ăn",
@@ -221,6 +231,19 @@ def get_current_user(
         )
 
     return user
+def get_optional_user(
+    credentials: HTTPAuthorizationCredentials | None = Depends(security),
+    db: DatabaseSession = Depends(get_db)
+) -> User | None:
+    if credentials is None:
+        return None
+    token_hash = hashlib.sha256(credentials.credentials.encode("utf-8")).hexdigest()
+    session = db.scalar(select(UserSession).where(UserSession.token_hash == token_hash))
+    if not session or session.expires_at <= datetime.utcnow():
+        return None
+    return session.user if session.user.is_active else None
+
+
 def require_admin(
     user: User = Depends(get_current_user)
 ) -> User:
@@ -313,6 +336,58 @@ def update_account_status(
         "role": user.role,
         "is_active": user.is_active
     }
+
+
+class RecipeModerationInput(BaseModel):
+    category: str
+    difficulty: str = Field(min_length=1, max_length=50)
+    action: str = Field(default="approve")
+
+
+@app.get("/api/admin/recipes/pending")
+def list_pending_recipes(
+    admin: User = Depends(require_admin),
+    db: DatabaseSession = Depends(get_db)
+):
+    recipes = db.scalars(
+        select(Recipe)
+        .where(Recipe.moderation_status == "pending")
+        .order_by(Recipe.id.desc())
+    ).all()
+    return [chuyen_cong_thuc_thanh_json(recipe, co_chi_tiet=True) for recipe in recipes]
+
+
+@app.patch("/api/admin/recipes/{recipe_id}/moderation")
+def moderate_recipe(
+    recipe_id: int,
+    payload: RecipeModerationInput,
+    admin: User = Depends(require_admin),
+    db: DatabaseSession = Depends(get_db)
+):
+    recipe = db.get(Recipe, recipe_id)
+    if recipe is None:
+        raise HTTPException(status_code=404, detail="Không tìm thấy công thức")
+
+    category_name = DANH_MUC.get(payload.category, payload.category)
+    if category_name not in DANH_MUC.values():
+        raise HTTPException(status_code=400, detail="Danh mục không hợp lệ")
+
+    category = db.scalar(select(Category).where(Category.name == category_name))
+    if category is None:
+        raise HTTPException(status_code=400, detail="Danh mục chưa được khởi tạo")
+
+    if payload.action == "reject":
+        db.delete(recipe)
+        db.commit()
+        return {"id": recipe_id, "status": "rejected"}
+
+    recipe.category = category
+    recipe.difficulty = payload.difficulty.strip()
+    recipe.moderation_status = "approved"
+    db.commit()
+    db.refresh(recipe)
+    return chuyen_cong_thuc_thanh_json(recipe, co_chi_tiet=True)
+
 
 seed_categories()
 if is_new_database:
@@ -488,6 +563,7 @@ def chuyen_cong_thuc_thanh_json(
         "cook_time": recipe.cook_time,
         "servings": recipe.servings,
         "difficulty": recipe.difficulty,
+        "moderation_status": recipe.moderation_status,
         "category": recipe.category.name,
         "category_code": next(
             (
@@ -581,9 +657,9 @@ def lay_danh_sach_cong_thuc():
     db = SessionLocal()
     try:
         recipes = db.scalars(
-            select(Recipe).order_by(
-                Recipe.id.desc()
-            )
+            select(Recipe)
+            .where(Recipe.moderation_status == "approved")
+            .order_by(Recipe.id.desc())
         ).all()
 
         return [
@@ -628,7 +704,8 @@ def tao_cong_thuc(
 
     recipe = Recipe(
         category=category,
-        author=user
+        author=user,
+        moderation_status="approved" if getattr(user, "role", None) == "admin" else "pending"
     )
     db.add(recipe)
 
@@ -638,6 +715,9 @@ def tao_cong_thuc(
         category,
         db
     )
+    is_admin = getattr(user, "role", None) == "admin"
+    recipe.difficulty = recipe.difficulty if is_admin else None
+    recipe.moderation_status = "approved" if is_admin else "pending"
     db.commit()
 
     return chuyen_cong_thuc_thanh_json(
@@ -647,7 +727,10 @@ def tao_cong_thuc(
 
 
 @app.get("/api/recipes/{recipe_id}")
-def lay_chi_tiet_cong_thuc(recipe_id: int):
+def lay_chi_tiet_cong_thuc(
+    recipe_id: int,
+    user: User | None = Depends(get_optional_user)
+):
     db = SessionLocal()
     try:
         recipe = db.get(Recipe, recipe_id)
@@ -656,6 +739,15 @@ def lay_chi_tiet_cong_thuc(recipe_id: int):
             raise HTTPException(
                 status_code=404,
                 detail="Không tìm thấy công thức"
+            )
+
+        if recipe.moderation_status == "pending" and (
+            user is None or
+            (user.id != recipe.author_id and user.role != "admin")
+        ):
+            raise HTTPException(
+                status_code=404,
+                detail="Công thức chưa được duyệt"
             )
 
         return chuyen_cong_thuc_thanh_json(
@@ -710,12 +802,17 @@ def cap_nhat_cong_thuc(
             detail="Danh mục chưa được khởi tạo"
         )
 
+    original_category = recipe.category
     cap_nhat_noi_dung_cong_thuc(
         recipe,
         payload,
         category,
         db
     )
+    if user.role != "admin":
+        recipe.category = original_category
+        recipe.difficulty = None
+        recipe.moderation_status = "pending"
     db.commit()
 
     return chuyen_cong_thuc_thanh_json(

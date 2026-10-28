@@ -23,7 +23,14 @@
             Đang kiểm tra quyền truy cập...
         </p>
 
-        <div id="adminContent" hidden style="overflow-x: auto;">
+        <div id="adminContent" hidden>
+            <section style="margin-bottom: 35px;">
+                <h2>Duyệt công thức đăng mới</h2>
+                <p>Quản trị viên tự chọn danh mục và độ khó trước khi công thức xuất hiện công khai.</p>
+                <div id="pendingRecipeList"></div>
+            </section>
+
+            <div style="overflow-x: auto;">
             <table style="width: 100%; border-collapse: collapse;">
                 <caption>Danh sách tài khoản trong hệ thống</caption>
                 <thead>
@@ -37,6 +44,7 @@
                 </thead>
                 <tbody id="userTableBody"></tbody>
             </table>
+            </div>
         </div>
     </main>
 
