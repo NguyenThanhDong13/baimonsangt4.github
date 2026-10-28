@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh sách đi chợ</title>
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .di-cho-page {
+            max-width: 1000px;
+            margin: 35px auto;
+            padding: 0 20px 50px;
+        }
+
+        .di-cho-page h1 {
+            margin-bottom: 12px;
+            color: #4b251b;
+        }
+
+        .di-cho-box {
+            margin-top: 24px;
+            padding: 24px;
+            background: white;
+            border-radius: 16px;
+        }
+
+        .di-cho-box h2 {
+            margin-bottom: 16px;
+        }
+
+        .shopping-recipe {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding: 14px 0;
+            border-bottom: 1px solid #ead8c5;
+        }
+
+        .shopping-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 14px 0;
+            border-bottom: 1px solid #ead8c5;
+        }
+
+        .shopping-item input {
+            margin-top: 3px;
+            width: 18px;
+            height: 18px;
+        }
+
+        .shopping-item:has(input:checked) span {
+            text-decoration: line-through;
+            color: #777;
+        }
+
+        .di-cho-page button {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 8px;
+            background: #a9470b;
+            color: white;
+            font: inherit;
+            cursor: pointer;
+        }
+
+        .di-cho-tools {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        #shoppingMessage {
+            margin: 16px 0;
+            line-height: 1.5;
+        }
+
+        @media print {
+            header,
+            .di-cho-tools,
+            .shopping-recipe button {
+                display: none;
+            }
+
+            body {
+                background: white;
+            }
+
+            .di-cho-page {
+                margin: 0;
+                max-width: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="logo">🛒 DANH SÁCH ĐI CHỢ</div>
+
+        <nav>
+            <a href="index.html">Trang chủ</a>
+            <a href="mon-an.html">Món ăn</a>
+            <a href="yeu-thich.html">Yêu thích</a>
+            <a href="admin.html" class="admin-link" hidden>Quản trị</a>
+            <a href="dang-nhap.html" class="auth-link">Đăng nhập</a>
+        </nav>
+    </header>
+
+    <main class="di-cho-page">
+        <h1>Danh sách đi chợ</h1>
+        <p>
+            Nguyên liệu được lấy theo khẩu phần lúc bạn thêm món.
+            Tích vào nguyên liệu đã mua hoặc đã có ở nhà.
+        </p>
+
+        <p id="shoppingMessage" role="status"></p>
+
+        <section class="di-cho-box">
+            <h2>Món đã chọn</h2>
+            <div id="shoppingRecipes"></div>
+        </section>
+
+        <section class="di-cho-box">
+            <h2>Nguyên liệu cần mua</h2>
+            <div id="shoppingIngredients"></div>
+        </section>
+
+        <div class="di-cho-tools">
+            <button id="printShopping" type="button">
+                In danh sách
+            </button>
+
+            <button id="clearShopping" type="button">
+                Xóa toàn bộ danh sách
+            </button>
+        </div>
+    </main>
+
+    <script src="config.js"></script>
+    <script src="script.js"></script>
+    <script src="di-cho.js"></script>
+</body>
+</html>

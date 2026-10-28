@@ -185,6 +185,7 @@ function khoiTaoBoChonKhauPhan() {
 
 function hienThiCongThuc(recipe) {
     congThucDangXem = recipe;
+        khoiTaoNutDiCho();
     khauPhanCoBan = layKhauPhanCoBan(recipe.servings);
     const tenMon = recipe.title || "Món ăn";
 
@@ -472,4 +473,79 @@ if (recipeId) {
     taiCongThucTuAPI();
 } else {
     taiCongThucCu();
+}
+function khoiTaoNutDiCho() {
+    const button = document.getElementById("themVaoDiCho");
+    const message = document.getElementById("diChoMessage");
+
+    if (!button || !message || !congThucDangXem) return;
+
+    button.disabled = false;
+
+    button.onclick = function () {
+        const recipe = congThucDangXem;
+        const servings = Number(
+            document.getElementById("soNguoiAn").value
+        );
+
+        // Lấy lượng nguyên liệu đang hiển thị theo số người đã chọn.
+        const ingredients = Array.from(
+            document.querySelectorAll("#chiTietNguyenLieu li")
+        ).map(item => item.textContent.trim());
+
+        if (!recipe.ingredients?.length) {
+            message.textContent =
+                "Món này chưa có nguyên liệu để thêm vào danh sách.";
+            return;
+        }
+
+        if (!Number.isInteger(servings) || servings < 1) {
+            message.textContent = "Vui lòng chọn số người ăn hợp lệ.";
+            return;
+        }
+
+        try {
+            const stored = localStorage.getItem("shoppingList");
+            const shoppingList = stored ? JSON.parse(stored) : [];
+
+            if (!Array.isArray(shoppingList)) {
+                throw new Error("Dữ liệu danh sách không hợp lệ.");
+            }
+
+            const key = recipe.id
+                ? `recipe-${recipe.id}`
+                : `name-${recipe.title}`;
+
+            const entry = {
+                key,
+                recipeId: recipe.id || null,
+                title: recipe.title,
+                servings,
+                ingredients
+            };
+
+            const index = shoppingList.findIndex(
+                item => item.key === key
+            );
+
+            if (index >= 0) {
+                shoppingList[index] = entry;
+            } else {
+                shoppingList.push(entry);
+            }
+
+            localStorage.setItem(
+                "shoppingList",
+                JSON.stringify(shoppingList)
+            );
+
+            message.textContent = index >= 0
+                ? `Đã cập nhật ${recipe.title} cho ${servings} người.`
+                : `Đã thêm ${recipe.title} cho ${servings} người.`;
+        } catch (error) {
+            console.error(error);
+            message.textContent =
+                "Không thể lưu danh sách. Hãy kiểm tra quyền lưu trữ của trình duyệt.";
+        }
+    };
 }

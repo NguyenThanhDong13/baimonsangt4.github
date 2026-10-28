@@ -63,6 +63,44 @@
         #commentReload[hidden] {
             display: none;
         }
+
+        .thao-tac-di-cho {
+            display: grid;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        #themVaoDiCho {
+            width: 100%;
+            padding: 14px 16px;
+            border: none;
+            border-radius: 10px;
+            background: #4b7043;
+            color: white;
+            font: inherit;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        #themVaoDiCho:hover {
+            background: #365330;
+        }
+
+        #themVaoDiCho:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .thao-tac-di-cho a {
+            color: #a9470b;
+            text-align: center;
+        }
+
+        #diChoMessage {
+            margin: 0;
+            color: #365330;
+            line-height: 1.5;
+        }
     </style>
 </head>
 
@@ -115,8 +153,16 @@
                 <div class="bo-chon-khau-phan">
                     <label for="soNguoiAn">Khẩu phần gia đình</label>
                     <div>
-                        <button id="giamNguoiAn" type="button" aria-label="Giảm số người">−</button>
-                        <select id="soNguoiAn" aria-label="Số người trong gia đình">
+                        <button
+                            id="giamNguoiAn"
+                            type="button"
+                            aria-label="Giảm số người"
+                        >−</button>
+
+                        <select
+                            id="soNguoiAn"
+                            aria-label="Số người trong gia đình"
+                        >
                             <option value="1">1 người</option>
                             <option value="2">2 người</option>
                             <option value="3">3 người</option>
@@ -128,9 +174,27 @@
                             <option value="9">9 người</option>
                             <option value="10">10 người</option>
                         </select>
-                        <button id="tangNguoiAn" type="button" aria-label="Tăng số người">+</button>
+
+                        <button
+                            id="tangNguoiAn"
+                            type="button"
+                            aria-label="Tăng số người"
+                        >+</button>
                     </div>
-                    <small id="ghiChuKhauPhan">Định lượng đang được tính theo 4 người.</small>
+
+                    <small id="ghiChuKhauPhan">
+                        Định lượng đang được tính theo 4 người.
+                    </small>
+                </div>
+
+                <div class="thao-tac-di-cho">
+                    <button id="themVaoDiCho" type="button" disabled>
+                        🛒 Thêm vào danh sách đi chợ
+                    </button>
+
+                    <a href="di-cho.html">Xem danh sách đi chợ</a>
+
+                    <p id="diChoMessage" role="status"></p>
                 </div>
 
                 <button class="nut-yeu-thich" type="button">
@@ -145,6 +209,7 @@
                     <a id="editRecipeLink" class="nut-sua-cong-thuc">
                         Sửa công thức
                     </a>
+
                     <button
                         id="deleteRecipeButton"
                         class="nut-xoa-cong-thuc"
@@ -181,6 +246,7 @@
 
                 <form id="commentForm">
                     <label for="commentContent">Ý kiến của bạn</label>
+
                     <textarea
                         id="commentContent"
                         maxlength="1000"
@@ -188,6 +254,7 @@
                         disabled
                         placeholder="Nhập bình luận, tối đa 1.000 ký tự..."
                     ></textarea>
+
                     <button id="commentSubmit" type="submit" disabled>
                         Gửi bình luận
                     </button>
