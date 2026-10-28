@@ -8,7 +8,7 @@ from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from pydantic import BaseModel, Field, field_validator
-from sqlalchemy import select, delete
+from sqlalchemy import select, delete, inspect
 from sqlalchemy.dialects.sqlite import insert as sqlite_insert
 from sqlalchemy.orm import Session as DatabaseSession
 
@@ -25,6 +25,8 @@ from models import (
     UserSession
 )
 
+
+is_new_database = not inspect(engine).has_table("users")
 
 Base.metadata.create_all(bind=engine)
 
@@ -313,6 +315,10 @@ def update_account_status(
     }
 
 seed_categories()
+if is_new_database:
+    from seed_recipes import main as seed_sample_recipes
+
+    seed_sample_recipes(create_backup=False)
 
 
 # ---------- Kiểm tra API ----------

@@ -7,8 +7,12 @@ from sqlalchemy import select
 
 from database import Base, engine, SessionLocal
 from models import (
-    Category, CookingStep, Ingredient,
-    Recipe, RecipeIngredient, User
+    Category,
+    CookingStep,
+    Ingredient,
+    Recipe,
+    RecipeIngredient,
+    User
 )
 
 BACKEND = Path(__file__).resolve().parent
@@ -16,7 +20,7 @@ AUTHOR = "__sample_recipes__"
 DISABLED_PASSWORD = "!sample-account-disabled"
 
 
-def main():
+def main(create_backup=True):
     samples = json.loads(
         (BACKEND / "sample_recipes.json").read_text(
             encoding="utf-8-sig"
@@ -27,6 +31,7 @@ def main():
         raise RuntimeError("Script này chỉ hỗ trợ SQLite.")
 
     database = engine.url.database
+
     if not database or database == ":memory:":
         raise RuntimeError("Cần dùng tệp database SQLite.")
 
@@ -37,28 +42,32 @@ def main():
         raise RuntimeError(
             f"Database không đúng: {database_path}\n"
             f"Cần dùng: {expected_path}\n"
-            "Hãy chạy lệnh từ thư mục backend."
+            "Hãy kiểm tra cấu hình DATABASE_URL."
         )
 
     if not database_path.exists():
-        raise RuntimeError("Không tìm thấy database cũ. Dừng nhập.")
+        raise RuntimeError(
+            "Database chưa được khởi tạo. "
+            "Hãy khởi động backend trước."
+        )
 
     print("Database:", database_path)
 
-    # Tạo thêm bản sao lưu tự động trước khi nhập.
-    stamp = datetime.now().strftime("%Y%m%d-%H%M%S-%f")
-    backup = BACKEND / f"huong_dan_nau_an.{stamp}.db.bak"
+    if create_backup:
+        stamp = datetime.now().strftime("%Y%m%d-%H%M%S-%f")
+        backup = BACKEND / f"huong_dan_nau_an.{stamp}.db.bak"
 
-    with sqlite3.connect(database_path) as source:
-        with sqlite3.connect(backup) as target:
-            source.backup(target)
+        with sqlite3.connect(database_path) as source:
+            with sqlite3.connect(backup) as target:
+                source.backup(target)
 
-    print("Bản sao lưu:", backup)
+        print("Bản sao lưu:", backup)
 
     Base.metadata.create_all(engine)
     created = 0
 
-    # Nếu nhập lỗi, toàn bộ giao dịch sẽ được hoàn tác.
+    # Toàn bộ dữ liệu mẫu được ghi trong một giao dịch.
+    # Nếu xảy ra lỗi, giao dịch sẽ được hoàn tác.
     with SessionLocal.begin() as db:
         author = db.scalar(
             select(User).where(User.username == AUTHOR)
@@ -85,7 +94,7 @@ def main():
                 )
             )
 
-            if existing:
+            if existing is not None:
                 continue
 
             category = db.scalar(
@@ -104,6 +113,8 @@ def main():
                 description=item["description"],
                 image_url=item["image_url"],
                 cook_time=item.get("cook_time"),
+                servings=item.get("servings"),
+                difficulty=item.get("difficulty"),
                 video_url=item.get("video_url"),
                 category=category,
                 author=author
@@ -130,10 +141,18 @@ def main():
                 )
 
             recipe.steps.extend(
-                CookingStep(step_number=index, content=content)
-                for index, content in enumerate(item["steps"], 1)
+                CookingStep(
+                    step_number=index,
+                    content=content
+                )
+                for index, content in enumerate(
+                    item["steps"],
+                    start=1
+                )
             )
 
+            # Giúp các truy vấn tiếp theo thấy dữ liệu vừa thêm.
+            db.flush()
             created += 1
 
     print(f"Đã thêm: {created} món")
