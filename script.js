@@ -464,10 +464,12 @@ function khoiTaoTimKiem() {
     return Array.from(
         danhSach.querySelectorAll(".mon-card")
     ).map(function (theMon) {
+        const tenMon = theMon.querySelector("h2");
+        const danhMuc = theMon.querySelector("span");
         return {
             the: theMon,
-            noiDung: chuanHoa(theMon.textContent),
-            danhMuc: theMon.querySelector("span").textContent.trim()
+            tenMon: chuanHoa(tenMon?.textContent || ""),
+            danhMuc: danhMuc?.textContent.trim() || ""
         };
     });
 }
@@ -480,9 +482,9 @@ function khoiTaoTimKiem() {
         let soMon = 0;
 
         cacMon.forEach(function (mon) {
-            // Món phải chứa tất cả các từ người dùng nhập.
+            // Chỉ tìm trong tên món; mô tả không ảnh hưởng kết quả.
             const dungTuKhoa = cacTu.every(function (tu) {
-                return mon.noiDung.includes(tu);
+                return mon.tenMon.includes(tu);
             });
 
             const dungDanhMuc =
@@ -491,7 +493,7 @@ function khoiTaoTimKiem() {
 
             const hienThi = dungTuKhoa && dungDanhMuc;
 
-            mon.the.hidden = !hienThi;
+            mon.the.toggleAttribute("hidden", !hienThi);
 
             if (hienThi) soMon++;
         });

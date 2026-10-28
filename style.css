@@ -474,6 +474,13 @@ footer {
     font: inherit;
 }
 
+.ghi-chu-tim-kiem {
+    margin: 8px 0 0;
+    color: #65513f;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
 .khung-tim-kiem button {
     padding: 13px 22px;
     border: none;
