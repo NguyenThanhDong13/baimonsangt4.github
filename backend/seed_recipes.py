@@ -1,5 +1,6 @@
 import json
 import sqlite3
+import sys
 from datetime import datetime
 from pathlib import Path
 
@@ -14,6 +15,18 @@ from models import (
 BACKEND = Path(__file__).resolve().parent
 AUTHOR = "__sample_recipes__"
 DISABLED_PASSWORD = "!sample-account-disabled"
+
+
+def tach_nguyen_lieu(text):
+    import re
+    match = re.match(r"^([0-9]+(?:[.,][0-9]+)?(?:/[0-9]+)?(?:\s*(?:g|kg|ml|l|quả|bát|muỗng|cái|tổ|thìa))?)\s+(.+)$", text.strip(), re.IGNORECASE)
+    if not match:
+        return text.strip(), ""
+    return match.group(2).strip(), match.group(1).strip()
+
+
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 
 def main():
@@ -77,16 +90,25 @@ def main():
             db.add(author)
             db.flush()
 
+        # Xóa một lần để quan hệ nguyên liệu/cách làm được tạo lại sạch sẽ.
+        for old_recipe in db.scalars(
+            select(Recipe).where(Recipe.author_id == author.id)
+        ).all():
+            db.delete(old_recipe)
+        db.flush()
+
         for item in samples:
             existing = db.scalar(
-                select(Recipe.id).where(
+                select(Recipe).where(
                     Recipe.author_id == author.id,
                     Recipe.title == item["title"]
                 )
             )
 
+            # Cập nhật lại công thức mẫu để sửa định lượng hoặc dữ liệu Unicode cũ.
             if existing:
-                continue
+                db.delete(existing)
+                db.flush()
 
             category = db.scalar(
                 select(Category).where(
@@ -105,12 +127,25 @@ def main():
                 image_url=item["image_url"],
                 cook_time=item.get("cook_time"),
                 video_url=item.get("video_url"),
+                servings="4 người",
                 category=category,
                 author=author
             )
             db.add(recipe)
+            db.flush()
 
-            for name in item["ingredients"]:
+            ingredient_data = item["ingredients"]
+            if not ingredient_data:
+                ingredient_data = [
+                    "500g thịt hoặc hải sản chính",
+                    "300g rau củ",
+                    "2 muỗng nước mắm",
+                    "1 muỗng dầu ăn",
+                    "Hành, tỏi"
+                ]
+
+            for raw_name in ingredient_data:
+                name, amount = tach_nguyen_lieu(raw_name)
                 ingredient = db.scalar(
                     select(Ingredient).where(
                         Ingredient.name == name
@@ -122,17 +157,18 @@ def main():
                     db.add(ingredient)
                     db.flush()
 
-                recipe.ingredient_links.append(
-                    RecipeIngredient(
-                        ingredient=ingredient,
-                        amount=""
-                    )
-                )
+                db.add(RecipeIngredient(
+                    recipe_id=recipe.id,
+                    ingredient_id=ingredient.id,
+                    amount=amount
+                ))
 
-            recipe.steps.extend(
-                CookingStep(step_number=index, content=content)
-                for index, content in enumerate(item["steps"], 1)
-            )
+            for index, content in enumerate(item["steps"], 1):
+                db.add(CookingStep(
+                    recipe_id=recipe.id,
+                    step_number=index,
+                    content=content
+                ))
 
             created += 1
 

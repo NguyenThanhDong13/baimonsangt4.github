@@ -653,6 +653,46 @@ footer {
     line-height: 1.6;
 }
 
+.bo-chon-khau-phan {
+    margin: 16px 0;
+    padding: 14px;
+    border-radius: 10px;
+    background: #fff8f0;
+}
+
+.bo-chon-khau-phan label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+
+.bo-chon-khau-phan > div {
+    display: flex;
+    gap: 8px;
+}
+
+.bo-chon-khau-phan select {
+    flex: 1;
+    min-width: 120px;
+    padding: 8px;
+}
+
+.bo-chon-khau-phan button {
+    width: 38px;
+    border: 0;
+    border-radius: 8px;
+    background: #a94708;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.bo-chon-khau-phan small {
+    display: block;
+    margin-top: 8px;
+    color: #65513f;
+}
+
 .thong-so-mon {
     display: grid;
     grid-template-columns: repeat(3, 1fr);

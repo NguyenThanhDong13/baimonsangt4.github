@@ -168,7 +168,7 @@ function setupLogin() {
                 : "Đăng nhập thành công!";
             message.style.color = "#2e7d32";
             setTimeout(() => {
-                window.location.href = "dang-cong-thuc.html";
+                window.location.href = "index.html";
             }, 500);
         } catch (error) {
             message.textContent = error.message;
