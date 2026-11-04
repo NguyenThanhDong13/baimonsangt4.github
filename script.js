@@ -187,6 +187,7 @@ async function setupRecipeForm() {
     const submitButton = form.querySelector('button[type="submit"]');
     const recipeId = new URLSearchParams(window.location.search).get("id");
     let currentUser = null;
+    let recipeCategory = "kho";
 
 if (localStorage.getItem("authToken")) {
     try {
@@ -223,8 +224,9 @@ if (localStorage.getItem("authToken")) {
             }
 
             document.getElementById("recipeName").value = recipe.title || "";
-            document.getElementById("recipeCategory").value =
-                layMaDanhMuc(recipe.category || recipe.category_code || "");
+            recipeCategory = recipe.category_code ||
+                layMaDanhMuc(recipe.category || "") ||
+                "kho";
             document.getElementById("recipeDescription").value = recipe.description || "";
             document.getElementById("recipeCookTime").value = recipe.cook_time || "";
             document.getElementById("recipeServings").value = recipe.servings || "";
@@ -247,12 +249,14 @@ if (localStorage.getItem("authToken")) {
             return;
         }
     }
+    else {
+        setFormEnabled(true);
+    }
 
     form.addEventListener("submit", async function (event) {
         event.preventDefault();
 
         const recipeName = document.getElementById("recipeName").value.trim();
-        const recipeCategory = document.getElementById("recipeCategory").value;
         const recipeDescription = document.getElementById("recipeDescription").value.trim();
         const recipeIngredients = document.getElementById("recipeIngredients").value
             .split(/\n+/)
@@ -265,7 +269,7 @@ if (localStorage.getItem("authToken")) {
         const recipeImage = document.getElementById("recipeImage").value.trim();
         const recipeVideo = document.getElementById("recipeVideo").value.trim();
 
-        if (!recipeName || !recipeCategory || !recipeDescription || recipeIngredients.length === 0 || recipeSteps.length === 0) {
+        if (!recipeName || !recipeDescription || recipeIngredients.length === 0 || recipeSteps.length === 0) {
             message.textContent = "Vui lòng điền đầy đủ thông tin.";
             message.style.color = "#b00020";
             return;
