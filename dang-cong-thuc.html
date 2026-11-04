@@ -34,9 +34,16 @@
                 <label for="recipeName">Tên món ăn</label>
                 <input type="text" id="recipeName" name="recipeName" placeholder="Ví dụ: Bánh xèo miền Tây" required>
 
-                <p class="recipe-moderation-note">
-                    Danh mục và độ khó do quản trị viên xét duyệt sau khi nhận công thức.
-                </p>
+                <label for="recipeCategory">Danh mục</label>
+                <select id="recipeCategory" name="recipeCategory" required>
+                    <option value="">-- Chọn danh mục --</option>
+                    <option value="nuoc">Món nước</option>
+                    <option value="canh">Món canh</option>
+                    <option value="chien">Món chiên</option>
+                    <option value="kho">Món khô</option>
+                    <option value="xao">Món xào</option>
+                    <option value="nuong">Món nướng</option>
+                </select>
 
                 <label for="recipeDescription">Mô tả ngắn</label>
                 <textarea id="recipeDescription" name="recipeDescription" rows="3" placeholder="Mô tả món ăn của bạn..." required></textarea>

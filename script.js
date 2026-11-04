@@ -223,6 +223,8 @@ if (localStorage.getItem("authToken")) {
             }
 
             document.getElementById("recipeName").value = recipe.title || "";
+            document.getElementById("recipeCategory").value =
+                layMaDanhMuc(recipe.category || recipe.category_code || "");
             document.getElementById("recipeDescription").value = recipe.description || "";
             document.getElementById("recipeCookTime").value = recipe.cook_time || "";
             document.getElementById("recipeServings").value = recipe.servings || "";
@@ -250,6 +252,7 @@ if (localStorage.getItem("authToken")) {
         event.preventDefault();
 
         const recipeName = document.getElementById("recipeName").value.trim();
+        const recipeCategory = document.getElementById("recipeCategory").value;
         const recipeDescription = document.getElementById("recipeDescription").value.trim();
         const recipeIngredients = document.getElementById("recipeIngredients").value
             .split(/\n+/)
@@ -262,7 +265,7 @@ if (localStorage.getItem("authToken")) {
         const recipeImage = document.getElementById("recipeImage").value.trim();
         const recipeVideo = document.getElementById("recipeVideo").value.trim();
 
-        if (!recipeName || !recipeDescription || recipeIngredients.length === 0 || recipeSteps.length === 0) {
+        if (!recipeName || !recipeCategory || !recipeDescription || recipeIngredients.length === 0 || recipeSteps.length === 0) {
             message.textContent = "Vui lòng điền đầy đủ thông tin.";
             message.style.color = "#b00020";
             return;
@@ -276,7 +279,7 @@ if (localStorage.getItem("authToken")) {
                     method: recipeId ? "PUT" : "POST",
                     body: JSON.stringify({
                         title: recipeName,
-                        category: "kho",
+                        category: recipeCategory,
                         description: recipeDescription,
                         image_url: recipeImage || "images/Com chien.jpg",
                         video_url: recipeVideo || null,
@@ -362,7 +365,9 @@ async function renderSavedRecipes() {
         const description = document.createElement("p");
         description.textContent = recipe.description || "";
         const category = document.createElement("span");
-        category.textContent = recipe.category;
+        category.textContent = getRecipeLabel(recipe.category);
+        card.dataset.category =
+            recipe.category_code || layMaDanhMuc(recipe.category || "");
         card.append(image, title, description, category);
 
         card.addEventListener("click", function (event) {
@@ -413,6 +418,11 @@ async function renderSavedRecipes() {
 }
 
 function getRecipeLabel(category) {
+    const normalized = layMaDanhMuc(category);
+    if (normalized) {
+        category = normalized;
+    }
+
     const labels = {
         nuoc: "Món nước",
         canh: "Món canh",
@@ -436,6 +446,25 @@ function chuanHoa(chuoi) {
         .replace(/\s+/g, " ");
 }
 
+function layMaDanhMuc(category) {
+    const categoryNormalized = chuanHoa(category || "");
+    const aliases = {
+        nuoc: "nuoc",
+        "mon nuoc": "nuoc",
+        canh: "canh",
+        "mon canh": "canh",
+        chien: "chien",
+        "mon chien": "chien",
+        kho: "kho",
+        "mon kho": "kho",
+        xao: "xao",
+        "mon xao": "xao",
+        nuong: "nuong",
+        "mon nuong": "nuong"
+    };
+    return aliases[categoryNormalized] || "";
+}
+
 function khoiTaoTimKiem() {
     const form = document.getElementById("formTimKiem");
 
@@ -449,14 +478,6 @@ function khoiTaoTimKiem() {
     const khongCoKetQua = document.getElementById("khongCoKetQua");
     const danhSach = document.querySelector(".danh-sach-mon");
 
-    const tenDanhMuc = {
-        nuoc: "Món nước",
-        canh: "Món canh",
-        chien: "Món chiên",
-        kho: "Món khô",
-        xao: "Món xào",
-        nuong: "Món nướng"
-    };
 
     // Lấy toàn bộ món ăn có sẵn trong trang.
     function layDanhSachMon() {
@@ -468,7 +489,9 @@ function khoiTaoTimKiem() {
         return {
             the: theMon,
             tenMon: chuanHoa(tenMon?.textContent || ""),
-            danhMuc: danhMuc?.textContent.trim() || ""
+            danhMuc: layMaDanhMuc(
+                theMon.dataset.category || danhMuc?.textContent.trim() || ""
+            )
         };
     });
 }
@@ -488,7 +511,7 @@ function khoiTaoTimKiem() {
 
             const dungDanhMuc =
                 danhMucDangChon === "" ||
-                mon.danhMuc === tenDanhMuc[danhMucDangChon];
+                mon.danhMuc === danhMucDangChon;
 
             const hienThi = dungTuKhoa && dungDanhMuc;
 
@@ -545,10 +568,9 @@ function khoiTaoTimKiem() {
 
         input.value = params.get("q") || "";
 
-        select.value = Object.prototype.hasOwnProperty.call(
-            tenDanhMuc,
-            loai
-        ) ? loai : "";
+        select.value = ["nuoc", "canh", "chien", "kho", "xao", "nuong"].includes(loai)
+            ? loai
+            : "";
 
         locMonAn();
     }

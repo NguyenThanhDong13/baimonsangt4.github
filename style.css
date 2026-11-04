@@ -497,6 +497,7 @@ footer {
 /* CARD MÓN */
 .mon-card {
     width: 280px;
+    box-sizing: border-box;
     background-color: white;
     border-radius: 15px;
     overflow: hidden;
@@ -505,6 +506,7 @@ footer {
 }
 
 .mon-card img {
+    display: block;
     width: 100%;
     height: 200px;
     object-fit: cover;
@@ -745,6 +747,7 @@ footer {
     display: grid;
     grid-template-columns: minmax(0, 1.6fr) minmax(300px, 0.75fr);
     column-gap: 35px;
+    row-gap: 0;
 }
 
 .nut-quay-lai {
@@ -772,13 +775,27 @@ footer {
 
 .chi-tiet-thong-tin {
     grid-column: 2;
+    grid-row: 1 / span 2;
 }
 
 .chi-tiet-anh {
+    grid-column: 1;
+    grid-row: 1;
+    width: 100%;
+    height: 460px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     overflow: hidden;
+    background: #fff;
     border-radius: 20px;
-    background: white;
-    box-shadow: 0 8px 25px rgba(75, 37, 27, 0.12);
+}
+
+.chi-tiet-anh img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
 }
 
 .cot-trai-mon {
@@ -786,7 +803,7 @@ footer {
 }
 
 .nguyen-lieu-ben-duoi-anh {
-    margin-top: 24px;
+    margin-top: 0;
 }
 
 .chi-tiet-anh img {
@@ -1007,9 +1024,14 @@ footer {
 
 .noi-dung-cong-thuc {
     grid-column: 1;
+    grid-row: 2;
     width: 100%;
     max-width: none;
-    margin-top: 24px;
+    margin-top: 25px;
+}
+
+.noi-dung-cong-thuc > .khoi-noi-dung:first-child {
+    margin-top: 0;
 }
 
 .khoi-noi-dung {
@@ -1052,9 +1074,11 @@ footer {
     }
 
     .cot-trai-mon,
+    .chi-tiet-anh,
     .chi-tiet-thong-tin,
     .noi-dung-cong-thuc {
         grid-column: 1;
+        grid-row: auto;
     }
 
     .chi-tiet-anh img {
