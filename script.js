@@ -575,10 +575,99 @@ function khoiTaoTimKiem() {
     docBoLocTuURL();
 }
 
+function layThongKeMon() {
+    return getLocalStorage("recipePopularity", {});
+}
+
+function luuThongKeMon(recipe, field) {
+    if (!recipe?.id) return;
+    const stats = layThongKeMon();
+    const key = String(recipe.id);
+    stats[key] ||= { id: recipe.id, title: recipe.title, image_url: recipe.image_url || "", category: recipe.category || "", views: 0, searches: 0 };
+    stats[key].title = recipe.title;
+    stats[key].image_url = recipe.image_url || stats[key].image_url;
+    stats[key].category = recipe.category || stats[key].category;
+    stats[key][field] = (stats[key][field] || 0) + 1;
+    saveLocalStorage("recipePopularity", stats);
+}
+
+async function renderHomeRecipeSections() {
+    const homeList = document.getElementById("danhSachNoiBat");
+    if (!homeList) return;
+
+    let recipes = [];
+    try { recipes = await apiRequest("/api/recipes"); } catch (error) { console.error(error); }
+
+    const names = ["Phở bò", "Gà chiên nước mắm", "Canh chua cá lóc", "Cơm chiên"];
+    let featured = names.map(name => recipes.find(recipe => chuanHoa(recipe.title) === chuanHoa(name))).filter(Boolean);
+    if (!featured.length) {
+        featured = [
+            { title: "Phở bò", image_url: "images/Pho bo.jpg", description: "Nước dùng đậm đà, ấm bụng và bổ dưỡng." },
+            { title: "Gà chiên nước mắm", image_url: "images/Ga chien nuoc mam.jpg", description: "Món giòn, thơm và dễ làm cho cả nhà." },
+            { title: "Canh chua cá lóc", image_url: "images/Canh chua ca loc.jpg", description: "Thanh mát, chua dịu cho bữa cơm gia đình." }
+        ];
+    }
+
+    let current = 0;
+    const renderCards = () => {
+        homeList.replaceChildren();
+        [0, 1, 2].forEach(offset => {
+            const recipe = featured[(current + offset) % featured.length];
+            const card = document.createElement("article");
+            card.className = "mon mon-noi-bat-card";
+            card.tabIndex = 0;
+            card.innerHTML = `<div class="anh-mon"><img src="${recipe.image_url || "images/Com chien.jpg"}" alt="${recipe.title}"></div><div class="thong-tin-mon"><span class="tuy-chon-mon">Món được yêu thích</span><h3>${recipe.title}</h3><p>${recipe.description || "Món ngon, dễ làm cho bữa cơm gia đình."}</p><span class="xem-cong-thuc">Xem công thức →</span></div>`;
+            card.onclick = () => window.location.href = recipe.id ? `chi-tiet-mon.html?id=${recipe.id}` : `mon-an.html?q=${encodeURIComponent(recipe.title)}`;
+            card.onkeydown = event => { if (event.key === "Enter") card.click(); };
+            homeList.appendChild(card);
+        });
+    };
+
+    document.querySelector(".nut-truoc")?.addEventListener("click", () => { current = (current - 1 + featured.length) % featured.length; renderCards(); });
+    document.querySelector(".nut-sau")?.addEventListener("click", () => { current = (current + 1) % featured.length; renderCards(); });
+    renderCards();
+
+    const seasons = [
+        ["🌱", "Mùa xuân • Thanh mát", "Canh rau", "canh"],
+        ["🍋", "Mùa hè • Chua dịu", "Canh chua", "canh"],
+        ["🍂", "Mùa thu • Hấp dẫn", "Món nướng", "nuong"],
+        ["🍲", "Mùa đông • Dinh dưỡng", "Món nước", "nuoc"]
+    ];
+    document.getElementById("danhSachTheoMua").innerHTML = seasons.map(([icon, badge, title, filter]) =>
+        `<a class="the-theo-mua" href="mon-an.html?loai=${filter}"><div class="icon-mua">${icon}</div><span>${badge}</span><h3>${title}</h3><p>Khám phá công thức phù hợp</p><strong>Khám phá →</strong></a>`
+    ).join("");
+
+    document.querySelectorAll(".goi-y-card").forEach(card => {
+        const title = card.querySelector("h3")?.textContent.trim();
+        const recipe = recipes.find(item => chuanHoa(item.title) === chuanHoa(title));
+        card.onclick = () => window.location.href = recipe ? `chi-tiet-mon.html?id=${recipe.id}` : `mon-an.html?q=${encodeURIComponent(title)}`;
+    });
+
+    renderPopularityTable(recipes);
+}
+
+function renderPopularityTable(recipes) {
+    const body = document.getElementById("bangMonPhoBien");
+    if (!body) return;
+    let rows = Object.values(layThongKeMon()).sort((a, b) => (b.views + b.searches) - (a.views + a.searches));
+    const empty = document.getElementById("bangMonTrong");
+
+    if (!rows.length) {
+        rows = ["Phở bò", "Gà chiên nước mắm", "Canh chua cá lóc"].map((title, index) => {
+            const recipe = recipes.find(item => chuanHoa(item.title) === chuanHoa(title));
+            return recipe ? { id: recipe.id, title: recipe.title, image_url: recipe.image_url, category: recipe.category, views: 128 - index * 17, searches: 86 - index * 12 } : null;
+        }).filter(Boolean);
+        if (empty) { empty.textContent = "Đang hiển thị các món phổ biến đề xuất mặc định."; empty.hidden = false; }
+    } else if (empty) empty.hidden = true;
+
+    body.innerHTML = rows.slice(0, 8).map((row, index) => `<tr><td><span class="hang-xep-hang">${index + 1}</span></td><td><div class="mon-trong-bang"><img src="${row.image_url || "images/Com chien.jpg"}" alt="${row.title}"><strong>${row.title}</strong></div></td><td>${row.category || "Món ăn"}</td><td>${Number(row.views || 0).toLocaleString("vi-VN")}</td><td>${Number(row.searches || 0).toLocaleString("vi-VN")}</td><td><a href="${row.id ? `chi-tiet-mon.html?id=${row.id}` : `mon-an.html?q=${encodeURIComponent(row.title)}`}" >Nấu ngay →</a></td></tr>`).join("");
+}
+
 async function initApp() {
     updateAuthUI();
     setupLogin();
     await setupRecipeForm();
+    await renderHomeRecipeSections();
     const ketQuaTaiMon = await renderSavedRecipes();
     if (ketQuaTaiMon !== false) {
         khoiTaoTimKiem();

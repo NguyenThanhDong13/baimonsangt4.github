@@ -70,6 +70,7 @@
         <nav>
             <a href="index.html">Trang chủ</a>
             <a href="mon-an.html">Món ăn</a>
+            <a href="di-cho.html">Đi chợ</a>
             <a href="yeu-thich.html">Yêu thích</a>
             <a href="dang-cong-thuc.html" class="recipe-link">Đăng công thức</a>
             <a href="admin.html" class="admin-link" hidden>Quản trị</a>
@@ -119,61 +120,47 @@
 </section>
 
     <!-- MÓN ĂN NỔI BẬT -->
-<!-- MÓN ĂN NỔI BẬT -->
-<section class="mon-an">
-
-    <h2>🍃 Món ăn nổi bật 🍃</h2>
-
-    <div class="danh-sach">
-
-        <!-- PHỞ BÒ -->
-        <div class="mon">
-
-            <div class="anh-mon">
-                <img src="images/Pho bo.jpg" alt="Phở bò">
-            </div>
-
-            <div class="thong-tin-mon">
-                <h3>Phở bò</h3>
-                <p>Món ăn truyền thống Việt Nam</p>
-            </div>
-
+<section class="mon-an" id="mon-an-noi-bat">
+    <div class="tieu-de-noi-bat">
+        <div>
+            <span class="nhan-phan-khu">Đề xuất cho bạn</span>
+            <h2>🍃 Món ăn nổi bật 🍃</h2>
         </div>
-
-
-        <!-- GÀ CHIÊN -->
-        <div class="mon">
-
-            <div class="anh-mon">
-                <img src="images/Ga chien nuoc mam.jpg" alt="Gà chiên nước mắm">
-            </div>
-
-            <div class="thong-tin-mon">
-                <h3>Gà chiên nước mắm</h3>
-                <p>Thơm ngon, dễ làm</p>
-            </div>
-
-        </div>
-
-
-        <!-- CANH CHUA -->
-        <div class="mon">
-
-            <div class="anh-mon">
-                <img src="images/Canh chua ca loc.jpg" alt="Canh chua">
-            </div>
-
-            <div class="thong-tin-mon">
-                <h3>Canh chua cá lóc</h3>
-                <p>Món canh cho bữa cơm gia đình</p>
-            </div>
-
-        </div>
-
+        <a class="xem-tat-ca" href="mon-an.html">Xem tất cả món →</a>
     </div>
 
+    <div class="noi-bat-kieu-xoay">
+        <button class="nut-chuyen-mon nut-truoc" type="button" aria-label="Món trước">‹</button>
+        <div class="danh-sach danh-sach-noi-bat" id="danhSachNoiBat"></div>
+        <button class="nut-chuyen-mon nut-sau" type="button" aria-label="Món tiếp theo">›</button>
+    </div>
 </section>
 
+    <!-- MÓN ĂN THEO MÙA -->
+<section class="mon-an-theo-mua">
+    <div class="tieu-de-phan-khu">
+        <span class="nhan-phan-khu">Theo mùa trong năm</span>
+        <h2>Chọn món phù hợp với thời tiết</h2>
+        <p>Công thức chua dịu, thanh mát hay ấm bụng cho từng mùa.</p>
+    </div>
+    <div class="luoi-mon-theo-mua" id="danhSachTheoMua"></div>
+</section>
+
+    <!-- MÓN ĂN PHỔ BIẾN -->
+<section class="bang-mon-noi-bat">
+    <div class="tieu-de-phan-khu">
+        <span class="nhan-phan-khu">Xu hướng cộng đồng</span>
+        <h2>Món ăn được xem và tìm nhiều nhất</h2>
+        <p>Bảng đề xuất được cập nhật theo lượt xem và tìm kiếm.</p>
+    </div>
+    <div class="khung-bang-noi-bat">
+        <p id="bangMonTrong" class="thong-bao-trong" hidden></p>
+        <table>
+            <thead><tr><th>#</th><th>Món ăn</th><th>Danh mục</th><th>Lượt xem</th><th>Lượt tìm</th><th></th></tr></thead>
+            <tbody id="bangMonPhoBien"></tbody>
+        </table>
+    </div>
+</section>
 
     <!-- DANH MỤC -->
 

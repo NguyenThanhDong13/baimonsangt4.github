@@ -20,7 +20,8 @@
 ```powershell
 py --version
 py -m venv backend\.venv
-backend\.venv\Scripts\python.exe -m pip install -r backend\requirements.txt
+backend\.venv\Scripts\python.exe -m pip install `
+    -r backend\requirements.txt
 ```
 
 Nếu không có lệnh `py`, thay bằng `python`. Không cần kích hoạt môi trường ảo khi dùng trực tiếp đường dẫn Python như trên.

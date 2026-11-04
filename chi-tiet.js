@@ -1,4 +1,4 @@
-const API_URL = window.APP_CONFIG?.apiBaseUrl || "http://127.0.0.1:8000";
+﻿const API_URL = window.APP_CONFIG?.apiBaseUrl || "http://127.0.0.1:8000";
 const thamSo = new URLSearchParams(window.location.search);
 
 const recipeId = thamSo.get("id");
@@ -47,6 +47,7 @@ async function taiCongThucTuAPI() {
     try {
         const recipe = await response.json();
         hienThiCongThuc(recipe);
+        luuThongKeMon(recipe, "views");
     } catch (error) {
         console.error(error);
         hienThiThongBaoLoi(

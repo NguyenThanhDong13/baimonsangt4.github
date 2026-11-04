@@ -652,6 +652,57 @@ def cap_nhat_noi_dung_cong_thuc(
 
 # ---------- Công thức ----------
 
+MOJIBAKE_MARKERS = ("Ã", "Â", "Ä", "áº", "á»")
+
+
+def sua_chuoi_bi_loi_ma_hoa(value: str | None) -> str | None:
+    if not value or not any(marker in value for marker in MOJIBAKE_MARKERS):
+        return value
+
+    cp1252_special = {
+        "€": 0x80, "‚": 0x82, "ƒ": 0x83, "„": 0x84, "…": 0x85,
+        "†": 0x86, "‡": 0x87, "ˆ": 0x88, "‰": 0x89, "Š": 0x8A,
+        "‹": 0x8B, "Œ": 0x8C, "Ž": 0x8E, "‘": 0x91, "’": 0x92,
+        "“": 0x93, "”": 0x94, "•": 0x95, "–": 0x96, "—": 0x97,
+        "˜": 0x98, "™": 0x99, "š": 0x9A, "›": 0x9B, "œ": 0x9C,
+        "ž": 0x9E, "Ÿ": 0x9F,
+    }
+    try:
+        raw = bytearray()
+        for character in value:
+            if character in cp1252_special:
+                raw.append(cp1252_special[character])
+                continue
+            raw.extend(character.encode("cp1252"))
+        return raw.decode("utf-8")
+    except (UnicodeEncodeError, UnicodeDecodeError):
+        return value
+
+
+@app.on_event("startup")
+def sua_du_lieu_tieng_viet_bi_loi_ma_hoa():
+    db = SessionLocal()
+    try:
+        for recipe in db.scalars(select(Recipe)).all():
+            for field in ("title", "description", "image_url", "video_url", "cook_time", "servings", "difficulty"):
+                setattr(recipe, field, sua_chuoi_bi_loi_ma_hoa(getattr(recipe, field)))
+        for step in db.scalars(select(CookingStep)).all():
+            step.content = sua_chuoi_bi_loi_ma_hoa(step.content)
+        for comment in db.scalars(select(Comment)).all():
+            comment.content = sua_chuoi_bi_loi_ma_hoa(comment.content)
+        for model, fields in (
+            (Category, ("name",)),
+            (User, ("username",)),
+            (Ingredient, ("name",)),
+        ):
+            for row in db.scalars(select(model)).all():
+                for field in fields:
+                    setattr(row, field, sua_chuoi_bi_loi_ma_hoa(getattr(row, field)))
+        db.commit()
+    finally:
+        db.close()
+
+
 @app.get("/api/recipes")
 def lay_danh_sach_cong_thuc():
     db = SessionLocal()
